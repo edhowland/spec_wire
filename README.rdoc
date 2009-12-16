@@ -1,12 +1,15 @@
-= spec_on
+= spec_wire
 
-Description goes here.
+A wire protocol for RSSpec. This  is really an object message passing protocol
+over HTTP using REST and JSON for parameter encoding. The goal is to maintain a normal workflow of test/fail/code/pass/refactor/pass or Red-Green-Refactor using Cucumber and RSpec and writing the code in your target language.
+
+Languages to be supported are PHP and C++. Hopefully Python, Perl and C# can be added. The reference server is in Ruby and runs on Sinatra.
 
 == Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
+* Add specs for it. This is important so I don't break it in a
   future version unintentionally.
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
