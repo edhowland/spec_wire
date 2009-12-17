@@ -4,11 +4,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "spec_on"
-    gem.summary = %Q{spec_on}
-    gem.description = %Q{spec_on_desc}
+    gem.name = "spec_wire"
+    gem.summary = %Q{spec_wire}
+    gem.description = %Q{spec_wire_desc}
     gem.email = "ed.howland@gmail.com"
-    gem.homepage = "http://github.com/edhowland/spec_on"
+    gem.homepage = "http://github.com/edhowland/spec_wire"
     gem.authors = ["Ed Howland"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "yard", ">= 0"
