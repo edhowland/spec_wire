@@ -10,7 +10,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'initia
 SpecWire::Initializer.run do |config|
   # set the configuration server url to something else
   # e.g. PHP:
-  # config.server_url = 'http://localhost/limonade/server.php'
+  # config.server_url = 'http://localhost/~user/limonade/server.php'
 
   config.server_url = 'http://localhost/~edh/limonade/server.php'
 end
