@@ -1,6 +1,16 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'fileutils'
+
+
 
 describe "SpecWire" do
+  include FileUtils
+  # include FileUtils::DryRun
+  
+  before(:all) do
+    rm(Dir.glob(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache') + '/*'))
+  end
+  
   before(:each) do
     @object = Bar.new(1,2)
   end
