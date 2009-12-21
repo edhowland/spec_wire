@@ -1,12 +1,20 @@
 #!/usr/bin/env ruby
 # reference spec_wire server in Ruby
 require 'sinatra'
+require 'logger'
 require 'haml'
 require 'json'
 require 'cgi'
-require_relative '../lib/spec_wire'
+require 'pp'
+
+def logit(msg)
+  File.open("spec_wire.log", "a+") do |f|
+    f.puts(msg)
+  end
+end
 
 get '/' do
+  logit('Get / response ok sent')
   "response ok"
 end
 
@@ -43,12 +51,14 @@ end
 
 # raw get of an object - useful for debugging? Or other servers
 get '/object/:id' do |id|
+  logit 'get of ' + id
   object = @@object_store[id.to_i]
   unless object.nil?
     status[200]
     object.to_json
   else
     status[404]
+    logit 'object_store ' + @@object_store.inspect
     "Object not found"
   end
 end

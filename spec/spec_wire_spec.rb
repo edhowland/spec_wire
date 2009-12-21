@@ -1,11 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'fileutils'
-
+require 'rest_client'
+require 'json'
 
 
 describe "SpecWire" do
   include FileUtils
-  # include FileUtils::DryRun
+  def server_url
+    SpecWire::Initializer.config.server_url
+  end
   
   before(:all) do
     rm(Dir.glob(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache') + '/*'))
@@ -38,6 +41,16 @@ describe "SpecWire" do
     end
     it "should respond to find with a list" do
       Bar.find(1).should be_kind_of Array
+    end
+  end
+  describe "server_url" do
+    it "should be Sinatra localhost at 4567" do
+      server_url.should == 'http://localhost:4567'
+    end
+  end
+  describe "raw get of an object" do
+    it "should resolve to the same object" do
+      JSON.parse(RestClient.get("#{server_url}/object/" + @object.our_id.to_s)).should == {'json_class' => 'Bar', 'data' => [1, 2], 'id' => @object.our_id}   
     end
   end
 end
