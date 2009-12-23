@@ -1,8 +1,10 @@
 class Module
   
   def server_url
-    # 'http://localhost:4567' 
     SpecWire::Initializer.config.server_url
+  end
+  def session_key
+    SpecWire::Initializer.config.session_key
   end
   
   def const_missing(name)
@@ -17,16 +19,18 @@ class Module
         require 'cgi'
         class #{name}
           def initialize(*args)
-            @meta = JSON.parse(RestClient.post('#{server_url}/class/#{name}', :args => JSON.generate(args)))
+            resp = RestClient.post('#{server_url}/class/#{name}', :args => JSON.generate(args))
+            @meta = JSON.parse(resp)
             @our_id = @meta['id']
+            @session_cookies = resp.cookies
           end
-          attr_reader :our_id
-          attr_reader :meta
+          attr_reader :our_id, :session_cookies, :meta
           def self.method_missing(method_name, *args)
             JSON.parse(RestClient.get('#{server_url}/class/#{name}/msg/' + method_name + '/args/' + CGI.escape(JSON.generate(args))))[0]
           end
           def method_missing(name, *args)
-            JSON.parse(RestClient.put('#{server_url}/object/' + @our_id.to_s + '/msg/' + name, :args => JSON.generate(args)))[0]
+            JSON.parse(RestClient.put('#{server_url}/object/' + @our_id.to_s + '/msg/' + name, 
+              {:args => JSON.generate(args)}, {:cookies => @session_cookies}))[0]
           end
         end
       EOC

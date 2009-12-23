@@ -6,8 +6,12 @@ require 'json'
 
 describe "SpecWire" do
   include FileUtils
+  RestClient.log = '/tmp/rest_client.log'
   def server_url
     SpecWire::Initializer.config.server_url
+  end
+  def session_key
+    SpecWire::Initializer.config.session_key
   end
   
   before(:all) do
@@ -43,14 +47,52 @@ describe "SpecWire" do
       Bar.find(1).should be_kind_of Array
     end
   end
-  describe "server_url" do
-    it "should be Sinatra localhost at 4567" do
-      server_url.should == 'http://localhost:4567'
+  describe "session handling" do
+    before(:each) do
+      @resp = RestClient.post("#{server_url}/class/Bar", :args => JSON.generate([1,2])) 
+    end
+    it "should set have some cookies" do
+      @resp.cookies.should_not be_nil
+    end
+    it "should set the session cookie" do
+      @resp.cookies[session_key].should_not be_nil
+    end
+    
+    it "should send the cookies back" do
+      obj_hash = JSON.parse(@resp)
+      # obj_hash['json_class'].should == 'Bar'
+      id = obj_hash['id'] 
+      JSON.parse(RestClient.get("#{server_url}/object/#{id}", :cookies => @resp.cookies)).should == 
+        {'json_class' => 'Bar', 
+          'data' => [1,2], 
+          'id' => id}
+    end
+    it "should send the cookies back in a PUT with args payload=[]" do
+      obj_hash = JSON.parse(@resp)
+      id = obj_hash['id']
+      RestClient.put("#{server_url}/object/#{id}/msg/val1", 
+        {:args => JSON.generate([])}, {:cookies => @resp.cookies})
     end
   end
+  
   describe "raw get of an object" do
+    it "should have cookies" do
+      @object.session_cookies.should_not be_nil
+    end
+    
     it "should resolve to the same object" do
-      JSON.parse(RestClient.get("#{server_url}/object/" + @object.our_id.to_s)).should == {'json_class' => 'Bar', 'data' => [1, 2], 'id' => @object.our_id}   
+      puts "object.our_id #{@object.our_id}"
+      JSON.parse(RestClient.get("#{server_url}/object/" + 
+        @object.our_id.to_s, :cookies =>  @object.session_cookies)).should == 
+        {'json_class' => @object.class.name, 
+          'data' => [1, 2], 
+          'id' => @object.our_id}   
+    end
+  end
+  describe "modifying the state of the same object" do
+    it "should set an attribute and get it back" do
+      @object.val1 = 99
+      @object.val1.should == 99
     end
   end
 end

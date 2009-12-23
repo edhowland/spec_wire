@@ -13,6 +13,7 @@ SpecWire::Initializer.run do |config|
   # config.server_url = 'http://localhost/~user/limonade/server.php'
 
   config.server_url = 'http://localhost/~edh/limonade/server.php'
+  config.session_key = 'Fresh_and_Minty_Limonade_App'
 end
 
 

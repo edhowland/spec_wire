@@ -7,6 +7,10 @@ require 'json'
 require 'cgi'
 require 'pp'
 
+# use Rack::Session::Cookie
+
+enable :sessions
+
 def logit(msg)
   File.open("spec_wire.log", "a+") do |f|
     f.puts(msg)
@@ -64,11 +68,10 @@ get '/object/:id' do |id|
 end
 
 # execute a class level method
-# TODO implement
 get '/class/:name/msg/:message/args/:args' do |name, message, args|
   if name =~ /Foo|Bar/
     klass = Kernel.const_get(name)
-    # TODO how to handle nil returned from method
+    # TODO how to handle nil returned from method?
     begin
       puts params.inspect
       unless args.nil? or args == "[]"
@@ -101,6 +104,8 @@ post '/class/:name' do |name|
     object = Kernel.const_get(name).new(*args)
     status[201]
     @@object_store[object.object_id] = object
+    session[object.object_id] = object
+    logit "POST session" + session.inspect
     object.to_json
   else
     status[404]
@@ -110,13 +115,13 @@ end
 
 # modify an object's state
 put '/object/:id/msg/:message' do |id, message|
+  logit 'PUT session:' + session.inspect
   object = @@object_store[id.to_i]
   unless object.nil?
     status[200]
     unless params[:args] == "[]"
       args = JSON.parse(params[:args])
-      # puts "params[:args]" + params[:args].inspect
-      JSON.generate([object.send(message, args)])
+      JSON.generate([object.send(message, *args)])
     else
       JSON.generate([object.send(message)])
     end
