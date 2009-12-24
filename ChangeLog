@@ -1,83 +1,15 @@
-commit 1946104398525a692b14e0d05fa46e76d73584e9
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Wed Dec 23 15:28:50 2009 -0500
-
-    php server is using session stoarge of objects; rest_client is saving and replying with all cookies sent from server. ruby_server is using sessions but they are empty. Might move ruby stored objects to sessions to make it in sync with other servers.
-
-commit 418de2c0b898c6591fb6773d781bb4788e55c9a8
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Mon Dec 21 14:02:10 2009 -0500
-
-    added raw get response check for objects"
-
-commit d95894bc9b9ad92dcc16f9c4fdb4604f5e69d68b
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Fri Dec 18 15:53:20 2009 -0500
-
-    Regenerated gemspec for version 0.3.0
-
-commit 4e38efa2199a8dae44ec2060e79c09ef6d24cdca
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Fri Dec 18 15:52:34 2009 -0500
-
-    Version bump to 0.3.0
-
-commit 45d26b4f19490ac0b255532e4c06bb67e083ffc9
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Fri Dec 18 15:51:25 2009 -0500
-
-    finished PHP server for now
-
-commit 06fcdbfdd44239fb4a5f80f4fcc9223b31e9b808
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Fri Dec 18 12:30:04 2009 -0500
-
-    added initializer/configuration settings
-
-commit bee6735f60e85b1ed7a3c6e5a4d51941f307c8e9
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Thu Dec 17 01:43:41 2009 -0500
-
-    modified files
-
-commit d4db6114317bc1288d2d7debdd1ba4d137e90d89
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Thu Dec 17 01:39:50 2009 -0500
-
-    version 0.2
-
-commit 868ad83870cb1cb7cd65698f5b448029b9576da3
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Thu Dec 17 01:37:53 2009 -0500
-
-    Version bump to 0.2.0
-
-commit 64b64ae201910ec3d09735d041a5505729b414d0
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Thu Dec 17 01:36:53 2009 -0500
-
-    added current files
-
-commit 3f5156af8795206f908d8cb2d5718c3525dedb2a
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Wed Dec 16 13:11:23 2009 -0500
-
-    first
-
-commit cc258dee0be1b217b3aeb4866aa2cba3d542a728
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Wed Dec 16 11:45:06 2009 -0500
-
-    Version bump to 0.1.0
-
-commit 695ca02085571a3ec16b10780334fd44c1a3453c
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Wed Dec 16 11:44:30 2009 -0500
-
-    Version bump to 0.0.0
-
-commit d077fcf3c042bec4362b51bf9259ce9754f89068
-Author: Ed Howland <ed.howland@gmail.com>
-Date:   Wed Dec 9 11:44:10 2009 -0500
-
-    Initial commit to spec_on.
+0079983ae5d9bc3d1f5ef6547d87b4d986410fe6 added _method=PUT for cases when regular HTTP PUT ,ethod doesn't work which happens with Apache+PHP server
+1946104398525a692b14e0d05fa46e76d73584e9 php server is using session stoarge of objects; rest_client is saving and replying with all cookies sent from server. ruby_server is using sessions but they are empty. Might move ruby stored objects to sessions to make it in sync with other servers.
+418de2c0b898c6591fb6773d781bb4788e55c9a8 added raw get response check for objects"
+d95894bc9b9ad92dcc16f9c4fdb4604f5e69d68b Regenerated gemspec for version 0.3.0
+4e38efa2199a8dae44ec2060e79c09ef6d24cdca Version bump to 0.3.0
+45d26b4f19490ac0b255532e4c06bb67e083ffc9 finished PHP server for now
+06fcdbfdd44239fb4a5f80f4fcc9223b31e9b808 added initializer/configuration settings
+bee6735f60e85b1ed7a3c6e5a4d51941f307c8e9 modified files
+d4db6114317bc1288d2d7debdd1ba4d137e90d89 version 0.2
+868ad83870cb1cb7cd65698f5b448029b9576da3 Version bump to 0.2.0
+64b64ae201910ec3d09735d041a5505729b414d0 added current files
+3f5156af8795206f908d8cb2d5718c3525dedb2a first
+cc258dee0be1b217b3aeb4866aa2cba3d542a728 Version bump to 0.1.0
+695ca02085571a3ec16b10780334fd44c1a3453c Version bump to 0.0.0
+d077fcf3c042bec4362b51bf9259ce9754f89068 Initial commit to spec_on.
