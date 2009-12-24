@@ -5,40 +5,50 @@
 
 Gem::Specification.new do |s|
   s.name = %q{spec_wire}
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2009-12-18}
+  s.date = %q{2009-12-24}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.extra_rdoc_files = [
-    "LICENSE",
+    "ChangeLog",
+     "LICENSE",
      "README.rdoc"
   ]
   s.files = [
     ".document",
      ".gitignore",
+     "ChangeLog",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
      "config/environment.rb",
+     "cookie.rb",
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
      "lib/const.rb",
      "lib/initializer.rb",
      "lib/spec_wire.rb",
+     "run.rb",
+     "servers/app.rb",
      "servers/bar.php",
+     "servers/config.ru",
+     "servers/lib/limonade.php",
      "servers/obj_rest.rb",
      "servers/ruby_server.rb",
      "servers/server.php",
+     "servers/session.rb",
+     "servers/sinatra.log",
      "spec/initializer_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/spec_wire_spec.rb",
-     "spec_wire.gemspec"
+     "spec_wire.gemspec",
+     "tmp/class_cache/bar.rb"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
   s.rdoc_options = ["--charset=UTF-8"]
