@@ -15,7 +15,7 @@ describe "SpecWire" do
   end
   
   before(:all) do
-    rm(Dir.glob(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache') + '/*'))
+    # rm(Dir.glob(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache') + '/*'))
   end
   
   before(:each) do

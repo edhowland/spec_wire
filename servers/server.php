@@ -10,7 +10,11 @@
   }
   
   function store_object($object) {
-    $_SESSION[spl_object_hash($object)] = $object;
+    store_object_with_id($object, spl_object_hash($object));
+  }
+  
+  function store_object_with_id($object, $id) {
+    $_SESSION[$id] = $object;
   }
   
   function get_object($id) {
@@ -60,7 +64,7 @@
       function new_object() {
         $name = params('name');
         $args = $_POST['args'];
-        logit('POST: args ' .$args);
+        // logit('POST: args ' .$args);
         if (is_null($args) || $args == '[]') {
           $object = new $name();
         }
@@ -85,20 +89,32 @@
     dispatch_put('/object/:id/msg/:message', 'send_message');
       function send_message() {
         $message = params('message');
-        $object = get_object(params('id'));
+        $n_message = $message;
+        $id = params('id');
+        $object = get_object($id);
         if (is_null($object)) {
           halt(NOT_FOUND, 'Object<' .params('id') . '> not found');
           return "object:" . params('id') . ": was not found";
         }
         else {
           $args = $_POST['args'];
+          logit('args exist ' . $message . ' ' . $args);
           if (is_null($args) || $args == '[]') {
-            $result = $object->$message();
+            logit('null args');
+            $result = $object->$message;
           }
           else {
             $args = json_decode($args);
-            $result = $object->$message($args);
+            if (preg_match('/\=$/', $message) == 1) {
+              $n_message = substr($message, 0, strlen($message) - 1);
+              $object->$n_message = $args[0];
+              logit("\$object->$n_message = $args[0];");
+              $result = array();
+            } else {
+              $result = $object->$message($args);
+            }
           }
+          store_object_with_id($object, $id);
           return json_encode(array($result));
         }
       }

@@ -6,13 +6,16 @@ class Module
   def session_key
     SpecWire::Initializer.config.session_key
   end
+  def put_needs_method_arg?
+    SpecWire::Initializer.config.put_needs_method_arg
+  end
   
   def const_missing(name)
     class_cache = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache')
     fname=name.to_s.downcase
     class_path=File.join(class_cache, "#{fname}.rb")
     File.open(class_path, 'w+') do |f|
-      puts "creating #{class_path}"
+      puts "creating #{class_path}" # TODO remove
       f.puts <<-EOC
         require 'json'
         require 'rest_client'
@@ -28,12 +31,23 @@ class Module
           def self.method_missing(method_name, *args)
             JSON.parse(RestClient.get('#{server_url}/class/#{name}/msg/' + method_name + '/args/' + CGI.escape(JSON.generate(args))))[0]
           end
+      EOC
+      if put_needs_method_arg?
+        f.puts <<-EOC
+          def method_missing(name, *args)
+            JSON.parse(RestClient.post('#{server_url}/object/' + @our_id.to_s + '/msg/' + name, 
+              {:args => JSON.generate(args), :_method => 'PUT'}, {:cookies => @session_cookies}))[0]
+          end
+        EOC
+      else
+        f.puts <<-EOC
           def method_missing(name, *args)
             JSON.parse(RestClient.put('#{server_url}/object/' + @our_id.to_s + '/msg/' + name, 
               {:args => JSON.generate(args)}, {:cookies => @session_cookies}))[0]
           end
-        end
-      EOC
+        EOC
+      end
+      f.puts "\nend";
     end unless File.exists?(class_path)
     require class_path
     klass = const_get(name)
