@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 # reference spec_wire server in Ruby
+require 'rubygems'
 require 'sinatra'
 require 'logger'
-require 'haml'
+# require 'haml'
 require 'json'
 require 'cgi'
 require 'pp'
