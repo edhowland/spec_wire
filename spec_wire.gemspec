@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2009-12-28}
+  s.date = %q{2010-01-07}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.extra_rdoc_files = [
@@ -59,10 +59,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{spec_wire}
   s.test_files = [
-    "spec/initializer_spec.rb",
-     "spec/simple_spec.rb",
+    "spec/spec_wire_spec.rb",
      "spec/spec_helper.rb",
-     "spec/spec_wire_spec.rb"
+     "spec/initializer_spec.rb",
+     "spec/simple_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
