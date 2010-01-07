@@ -5,25 +5,90 @@
   }
   require_once 'lib/limonade.php';
 
-  function not_found($errno, $errstr, $errfile=null, $errline=null){
-    return $errstr;
+  function error_handler($errno, $errstr, $errfile, $errline) {
+    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    logit($errmsg);
+    halt(SERVER_ERROR, $errmsg);
+    return false;
+  }
+  
+  function not_found($errno, $errstr, $errfile, $errline) {
+    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    logit('not found ' . $errmsg);
+    return json_encode(array("not found" => $errmsg));
+  }
+  
+  function server_error($errno, $errstr, $errfile, $errline) {
+    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    logit("srver error:" . $errmsg);
+    return json_encode(array("server_error" => $errmsg));
+  }
+
+  error(E_LIM_HTTP, 'my_http_errors');
+  function my_http_errors($errno, $errstr, $errfile, $errline)
+  {
+    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    logit("http error:" . $errmsg);
+    status($errno);
+    return json_encode(array("http_error" => $errmsg));
+  }
+
+  error(E_LIM_PHP, 'my_php_errors');
+  function my_php_errors($errno, $errstr, $errfile, $errline)
+  {
+    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    logit("php error:" . $errmsg);
+    status(500);
+    return json_encode(array("php_error" => $errmsg));
+  }
+  
+  
+
+  function store_object_with_id($object, $id) {
+    $_SESSION[$id] = $object;
   }
   
   function store_object($object) {
     store_object_with_id($object, spl_object_hash($object));
   }
   
-  function store_object_with_id($object, $id) {
-    $_SESSION[$id] = $object;
-  }
-  
   function get_object($id) {
     return $_SESSION[$id];
   }
   
-  function logit($msg) {
+  function isAssoc($arr)
+  {
+    return array_keys($arr) !== range(0, count($arr) - 1);
+  }
+  
+  function convert_obj($obj) {
+    if (is_string($obj)) {
+      return var_export($obj, true);
+    }
+    elseif (is_array($obj) || isAssoc($obj)) {
+      return var_export($obj, true);
+    }
+    else {
+      return $obj;
+    }
+  }
+  
+  function convert_objs($arr) {
+    return array_map('convert_obj', $arr);
+  }
+  
+  function dump_arg($arg) {
+    return var_export($arg, true);
+  }
+  
+  function logit() {
+    $args = func_get_args();
+    $msg = array_shift($args);
+    
+    $args = array_map('dump_arg', $args);
+    
     $fh = fopen("/tmp/limonade.log", "a+");
-    fwrite($fh, $msg . "\n");
+    fwrite($fh, $msg . '|' . implode(',', $args) .  "|\n");
     fclose($fh);
   }
 
@@ -62,60 +127,88 @@
       
    dispatch_post('/class/:name', 'new_object');
       function new_object() {
-        $name = params('name');
-        $args = $_POST['args'];
-        // logit('POST: args ' .$args);
-        if (is_null($args) || $args == '[]') {
-          $object = new $name();
-        }
-        else {
-          $args = json_decode($args);
-          if (is_array($args)) {
-            $argstr = join($args, ",");
+        set_error_handler("error_handler");
+        try {
+          $name = params('name');
+          $args = $_POST['args'];
+          $argstr = $args;
+          logit('POST: args ', $args);
+          if (is_null($args) || $args == '[]') {
+            $object = new $name();
           }
           else {
-            $argstr = $args;
+            logit('args b4 decode', $args);
+            $args = json_decode($args, true);
+            logit('args after decode', $args);
+            if (is_array($args)) {
+              $args = convert_objs($args);
+              logit("args after conversion", $args);
+              $argstr = join($args, ",");
+              logit("argstr after join", $argstr);
+            }
+            else {
+              $argstr = $args;
+            }
+            logit("calling " . "return new $name($argstr);");
+            $object = eval("return new $name($argstr);");
           }
-          $object = eval("return new $name($argstr);");
-        }
-        store_object($object);
-        $results = array('json_class' => $name
-          , 'data' => $args
-          ,  'id' => spl_object_hash($object));
+          store_object($object);
+          $results = array('json_class' => $name
+            , 'data' => $argstr
+            ,  'id' => spl_object_hash($object));
           
-        return json_encode($results);
+          return json_encode($results);
+        }
+        catch(Exception $e) {
+          logit('Exception ' . $e->getMessage());
+          halt(422, "Error procession request :" . $e->getMessage());
+          return json_encode(array('error' => $e->getMessage()));
+          }
       }
       
     dispatch_put('/object/:id/msg/:message', 'send_message');
       function send_message() {
-        $message = params('message');
-        $n_message = $message;
-        $id = params('id');
-        $object = get_object($id);
-        if (is_null($object)) {
-          halt(NOT_FOUND, 'Object<' .params('id') . '> not found');
-          return "object:" . params('id') . ": was not found";
-        }
-        else {
-          $args = $_POST['args'];
-          logit('args exist ' . $message . ' ' . $args);
-          if (is_null($args) || $args == '[]') {
-            logit('null args');
-            $result = $object->$message;
+        set_error_handler("error_handler");
+        try {
+          $message = params('message');
+          $n_message = $message;
+          $id = params('id');
+          $object = get_object($id);
+          if (is_null($object)) {
+            halt(NOT_FOUND, 'Object<' .params('id') . '> not found');
+            logit('object not found', params('id'));
+            return "object:" . params('id') . ": was not found";
           }
           else {
-            $args = json_decode($args);
-            if (preg_match('/\=$/', $message) == 1) {
-              $n_message = substr($message, 0, strlen($message) - 1);
-              $object->$n_message = $args[0];
-              logit("\$object->$n_message = $args[0];");
-              $result = array();
-            } else {
-              $result = $object->$message($args);
+            $args = $_POST['args'];
+            logit('message :' . $message . ' aegs |' . $args . '|');
+            if (is_null($args) || $args == '[]') {
+              logit('args are empty');
+              $result = $object->$message;
+              logit("\$object->$message returning ", $result);
             }
+            else {
+              logit('decoding args|' . $args . '|');
+              $args = json_decode($args);
+              logit('args are :', $args);
+              if (preg_match('/\=$/', $message) == 1) {
+                $n_message = substr($message, 0, strlen($message) - 1);
+                logit("\$object->$n_message = ", $args[0]);
+                $object->$n_message = $args[0];
+                $result = array();
+              } else {
+                $result = $object->$message($args);
+                logit("\$obect->$message()  returning ", $result);
+              }
+            }
+            store_object_with_id($object, $id);
+            return json_encode(array($result));
           }
-          store_object_with_id($object, $id);
-          return json_encode(array($result));
+        }
+        catch (Exception $e) {
+          logit('Exception occured :' . $e->getMessage());
+          halt(422, "Error procession request :" . $e->getMessage());
+          return json_encode(array('error' => $e->getMessage()));
         }
       }
       

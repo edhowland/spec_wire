@@ -2,15 +2,11 @@
 # reference spec_wire server in Ruby
 require 'rubygems'
 require 'sinatra'
-require 'logger'
-# require 'haml'
 require 'json'
 require 'cgi'
 require 'pp'
 
-# use Rack::Session::Cookie
-
-enable :sessions
+class ArgumentsMissing < StandardError; end
 
 def logit(msg)
   File.open("spec_wire.log", "a+") do |f|
@@ -18,37 +14,11 @@ def logit(msg)
   end
 end
 
+enable :sessions
+
 get '/' do
   logit('Get / response ok sent')
   "response ok"
-end
-
-# test classes
-class Foo
-  attr_accessor :val1, :val2
-  def initialize(v1, v2)
-    @val1 = v1
-    @val2 = v2
-  end
-  def baz?
-    false
-  end
-  def to_json(*args)
-    {
-      :json_class => self.class.name,
-      :data => [val1, val2],
-      :id => object_id
-    }.to_json(*args)
-  end
-end
-class Bar < Foo
-   attr_accessor :foo, :baz
-   def self.find(count)
-     count
-   end
-   def self.locate
-     'y'
-   end
 end
 
 #  our object store
@@ -62,72 +32,66 @@ get '/object/:id' do |id|
     status[200]
     object.to_json
   else
-    status[404]
     logit 'object_store ' + @@object_store.inspect
-    "Object not found"
+    halt 404, JSON.generate({:error => "object not found"})
   end
 end
 
 # execute a class level method
 get '/class/:name/msg/:message/args/:args' do |name, message, args|
-  if name =~ /Foo|Bar/
-    klass = Kernel.const_get(name)
+  begin
+    require name.downcase
     # TODO how to handle nil returned from method?
-    begin
-      puts params.inspect
-      unless args.nil? or args == "[]"
-        args = JSON.parse(CGI.unescape(args))
-        result = klass.send(message, args)
-      else
-        result = klass.send(message)
-      end
-      unless result.nil?
-        status[200]
-        JSON.generate([result])
-      else
-        status[422]
-        "Method error"
-      end
-    rescue => e
-      status[500]
-      e.message
+    klass = Kernel.const_get(name)
+    unless args.nil? or args == "[]"
+      args = JSON.parse(CGI.unescape(args))
+      result = klass.send(message, args)
+    else
+      result = klass.send(message)
     end
-  else
-    status[404] # pending
-    "Pending - class not found"
+    unless result.nil?
+      JSON.generate([result])
+    else
+      halt 422, JSON.generate({:error => "Method error"})
+    end
+  rescue LoadError => e
+    halt 404, JSON.generate({:error => "class not found"})
+  rescue Exception => e
+    halt 422, JSON.generate({:error => e.message})
   end
 end
 
 # creates a new class and returns it via json {:id => object_id, :attr => 'value_or_nil'}
 post '/class/:name' do |name|
-  args = JSON.parse(params[:args])
-  if name =~ /Foo|Bar/
+  begin
+    require name.downcase
+    raise ArgumentsMissing.new("args parameter missing") if params[:args].nil?
+    args = JSON.parse(params[:args])
     object = Kernel.const_get(name).new(*args)
-    status[201]
     @@object_store[object.object_id] = object
     session[object.object_id] = object
-    logit "POST session" + session.inspect
+    logit "POST class:" + object.class.name + " created"
     object.to_json
-  else
-    status[404]
-    "Class not found"
+  rescue LoadError => e
+    halt 404, JSON.generate({:error => 'class not found'})
+  rescue Exception => e
+    halt 422, JSON.generate({:error => e.message})
   end
 end
 
 # modify an object's state
 put '/object/:id/msg/:message' do |id, message|
   logit 'PUT session:' + session.inspect
-  object = @@object_store[id.to_i]
-  unless object.nil?
-    status[200]
+  begin 
+    object = @@object_store[id.to_i]
+    raise Sinatra::NotFound.new('Object not found') if object.nil?
     unless params[:args] == "[]"
       args = JSON.parse(params[:args])
       JSON.generate([object.send(message, *args)])
     else
       JSON.generate([object.send(message)])
     end
-  else
-    status[404]
-    "Object not found"
+  rescue Sinatra::NotFound => e
+    halt 404, JSON.generate({:error => e.messgae})
   end
 end

@@ -95,4 +95,22 @@ describe "SpecWire" do
       @object.val1.should == 99
     end
   end
+  describe "sending complex objects and getting them back" do
+    it "should send a Hash" do
+      @object.val1 = {:size => 1000}
+      @object.val1.should == {'size' => 1000}
+    end
+    
+    it "should send a complex hash" do
+      @object.val1 = {:gum => 'fatal', :inner => 
+          {:really => {
+              :something => 'fishy'
+          }}}
+      @object.val1.should == {'gum' => 'fatal', 'inner' => 
+          {'really' => {
+              'something' => 'fishy'
+          }}}
+      
+    end
+  end
 end
