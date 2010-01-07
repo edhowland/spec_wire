@@ -52,10 +52,10 @@ get '/class/:name/msg/:message/args/:args' do |name, message, args|
     unless result.nil?
       JSON.generate([result])
     else
-      halt 422, JSON.generate({:error => "Method error"})
+      halt 422, JSON.generate({:error => "Method :#{message} error"})
     end
   rescue LoadError => e
-    halt 404, JSON.generate({:error => "class not found"})
+    halt 404, JSON.generate({:error => "class #{name} not found"})
   rescue Exception => e
     halt 422, JSON.generate({:error => e.message})
   end
@@ -64,7 +64,7 @@ end
 # creates a new class and returns it via json {:id => object_id, :attr => 'value_or_nil'}
 post '/class/:name' do |name|
   begin
-    require name.downcase
+    require name.downcase # our form of autoloading
     raise ArgumentsMissing.new("args parameter missing") if params[:args].nil?
     args = JSON.parse(params[:args])
     object = Kernel.const_get(name).new(*args)
@@ -73,7 +73,7 @@ post '/class/:name' do |name|
     logit "POST class:" + object.class.name + " created"
     object.to_json
   rescue LoadError => e
-    halt 404, JSON.generate({:error => 'class not found'})
+    halt 404, JSON.generate({:error => "class #{name} not found"})
   rescue Exception => e
     halt 422, JSON.generate({:error => e.message})
   end
@@ -92,6 +92,8 @@ put '/object/:id/msg/:message' do |id, message|
       JSON.generate([object.send(message)])
     end
   rescue Sinatra::NotFound => e
-    halt 404, JSON.generate({:error => e.messgae})
+    halt 404, JSON.generate({:error => e.message})
+  rescue Exception => e
+    halt 422, JSON.generate({:error => e.message})
   end
 end
