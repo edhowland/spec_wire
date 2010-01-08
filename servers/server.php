@@ -1,45 +1,62 @@
 <?php
   // REST server for SpecWire in PHP
   function __autoload($class_name) {
-      require_once $class_name . '.php';
+      $file = $class_name . '.php';
+      if (file_exists($file)) {
+        require_once $file;
+      }
+      else {
+        throw new Exception('Class not found');
+      }
   }
   require_once 'lib/limonade.php';
 
   function error_handler($errno, $errstr, $errfile, $errline) {
-    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
-    logit($errmsg);
+    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
+    logit("error_handler:" . $errmsg);
+    
     halt(SERVER_ERROR, $errmsg);
     return false;
   }
   
+  // use of ErrorException within custom error handler
+  // not built in to later versions of PHP??/
+  function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+      logit("error handled:" . $errstr);
+      throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+  }
+  set_error_handler("exception_error_handler");
+  
+  
+  
   function not_found($errno, $errstr, $errfile, $errline) {
-    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit('not found ' . $errmsg);
-    return json_encode(array("not found" => $errmsg));
+    return json_encode(array("error" => $errmsg));
   }
   
   function server_error($errno, $errstr, $errfile, $errline) {
-    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("srver error:" . $errmsg);
-    return json_encode(array("server_error" => $errmsg));
+    return json_encode(array("error" => $errmsg));
   }
 
   error(E_LIM_HTTP, 'my_http_errors');
   function my_http_errors($errno, $errstr, $errfile, $errline)
   {
-    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("http error:" . $errmsg);
     status($errno);
-    return json_encode(array("http_error" => $errmsg));
+    return json_encode(array("error" => $errmsg));
   }
 
   error(E_LIM_PHP, 'my_php_errors');
   function my_php_errors($errno, $errstr, $errfile, $errline)
   {
-    $errmsg = "error occured($errorno): $errstr in=>$errfile:$errline"; 
+    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("php error:" . $errmsg);
-    status(500);
-    return json_encode(array("php_error" => $errmsg));
+    status(422);
+    return json_encode(array("error" => $errmsg));
   }
   
   
@@ -102,7 +119,7 @@
     function raw_get_object() {
       $object = get_object(params('id'));
       if (is_null($object)) {
-        halt(NOT_FOUND, 'Object<' .params('id') . '> not found');
+        halt(NOT_FOUND, json_encode(array("error" => 'Object<' .params('id') . '> not found')));
         return "object:" . params('id') . ": was not found";
       }
       // TODO: investigate why spl_object_hash does not eql variable in $_SESSION
@@ -116,18 +133,24 @@
       
    dispatch('/class/:name/msg/:message/args/:args', 'send_class_message');
     function send_class_message() {
-      $name = params('name');
-      $message = params('message');
-      $args = params('args');
+      try {
+        $name = params('name');
+        $message = params('message');
+        $args = params('args');
       
-      $object = new $name();
-      $result = $object->$message();
-      return json_encode(array($result));
+        $object = new $name();
+        $result = $object->$message();
+        return json_encode(array($result));
+      }
+      catch (Exception $e) {
+        logit('Exception ' . $e->getMessage());
+        halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
+        return json_encode(array('error' => $e->getMessage()));
+      }
     }
       
    dispatch_post('/class/:name', 'new_object');
       function new_object() {
-        set_error_handler("error_handler");
         try {
           $name = params('name');
           $args = $_POST['args'];
@@ -161,21 +184,21 @@
         }
         catch(Exception $e) {
           logit('Exception ' . $e->getMessage());
-          halt(422, "Error procession request :" . $e->getMessage());
+          halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
           return json_encode(array('error' => $e->getMessage()));
           }
       }
       
     dispatch_put('/object/:id/msg/:message', 'send_message');
       function send_message() {
-        set_error_handler("error_handler");
+        // set_error_handler("error_handler");
         try {
           $message = params('message');
           $n_message = $message;
           $id = params('id');
           $object = get_object($id);
           if (is_null($object)) {
-            halt(NOT_FOUND, 'Object<' .params('id') . '> not found');
+            halt(NOT_FOUND, json_encode(array("error" => 'Object not found')));
             logit('object not found', params('id'));
             return "object:" . params('id') . ": was not found";
           }
@@ -207,7 +230,7 @@
         }
         catch (Exception $e) {
           logit('Exception occured :' . $e->getMessage());
-          halt(422, "Error procession request :" . $e->getMessage());
+          halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
           return json_encode(array('error' => $e->getMessage()));
         }
       }
