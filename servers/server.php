@@ -11,23 +11,15 @@
   }
   require_once 'lib/limonade.php';
 
-  function error_handler($errno, $errstr, $errfile, $errline) {
-    $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
-    logit("error_handler:" . $errmsg);
-    
-    halt(SERVER_ERROR, $errmsg);
-    return false;
-  }
-  
   // use of ErrorException within custom error handler
   // not built in to later versions of PHP??/
   function exception_error_handler($errno, $errstr, $errfile, $errline ) {
-      logit("error handled:" . $errstr);
+    logit("(possible) error handled:" . $errstr . "($errno)" . " in => $errfile($errline)");
+    if ($errno < 512) {
       throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
   }
   set_error_handler("exception_error_handler");
-  
-  
   
   function not_found($errno, $errstr, $errfile, $errline) {
     $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
@@ -198,11 +190,14 @@
           $id = params('id');
           $object = get_object($id);
           if (is_null($object)) {
-            halt(NOT_FOUND, json_encode(array("error" => 'Object not found')));
             logit('object not found', params('id'));
+            halt(NOT_FOUND, json_encode(array("error" => 'Object not found')));
             return "object:" . params('id') . ": was not found";
           }
           else {
+            if (!method_exists($object, $message)) {
+              throw new Exception("method $message does not exist");
+            }
             $args = $_POST['args'];
             logit('message :' . $message . ' aegs |' . $args . '|');
             if (is_null($args) || $args == '[]') {
@@ -220,8 +215,9 @@
                 $object->$n_message = $args[0];
                 $result = array();
               } else {
+                logit("\$obect->$message()"); 
                 $result = $object->$message($args);
-                logit("\$obect->$message()  returning ", $result);
+                logit("returning ", $result);
               }
             }
             store_object_with_id($object, $id);
