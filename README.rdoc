@@ -17,4 +17,4 @@ Languages to be supported are PHP and C++. Hopefully Python, Perl and C# can be 
 
 == Copyright
 
-Copyright (c) 2009 Ed Howland. See LICENSE for details.
+Copyright (c) 2009 Ed Howland. See LICENSE for lots of details.
