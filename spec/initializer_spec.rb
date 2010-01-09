@@ -3,7 +3,6 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'initia
 
 describe "SpecWire::Initializer" do
   before(:all) do
-    SpecWire::Initializer.config.server_url.should == 'http://localhost:4567'
     SpecWire::Initializer.run do |config|
       config.server_url = 'http://localhost/~user/limonade/server.php'
     end

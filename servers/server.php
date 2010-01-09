@@ -6,7 +6,7 @@
         require_once $file;
       }
       else {
-        throw new Exception('Class not found');
+        throw new Exception("Class ($class_name) not found");
       }
   }
   require_once 'lib/limonade.php';
@@ -176,7 +176,7 @@
         }
         catch(Exception $e) {
           logit('Exception ' . $e->getMessage());
-          halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
+          halt(422, json_encode(array("error" => $e->getMessage())));
           return json_encode(array('error' => $e->getMessage()));
           }
       }
@@ -195,9 +195,6 @@
             return "object:" . params('id') . ": was not found";
           }
           else {
-            if (!method_exists($object, $message)) {
-              throw new Exception("method $message does not exist");
-            }
             $args = $_POST['args'];
             logit('message :' . $message . ' aegs |' . $args . '|');
             if (is_null($args) || $args == '[]') {
@@ -212,10 +209,16 @@
               if (preg_match('/\=$/', $message) == 1) {
                 $n_message = substr($message, 0, strlen($message) - 1);
                 logit("\$object->$n_message = ", $args[0]);
+                if (!property_exists($object, $n_message)) {
+                  throw new Exception("property $n_message (original message:$message) does not exist");
+                }
                 $object->$n_message = $args[0];
                 $result = array();
               } else {
                 logit("\$obect->$message()"); 
+                if (!method_exists($object, $message)) {
+                  throw new Exception("method $message does not exist");
+                }
                 $result = $object->$message($args);
                 logit("returning ", $result);
               }
@@ -226,7 +229,7 @@
         }
         catch (Exception $e) {
           logit('Exception occured :' . $e->getMessage());
-          halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
+          halt(422, json_encode(array("error" => $e->getMessage())));
           return json_encode(array('error' => $e->getMessage()));
         }
       }

@@ -9,8 +9,7 @@ describe "Error Handling" do
       @obj = Bar.new(1,2)
     end
     it "should report an error for invalid method call" do
-      lambda {@obj.no_method(nil)}.should raise_error
+      lambda {@obj.no_method(nil)}.should raise_error 
     end
   end
-  
 end

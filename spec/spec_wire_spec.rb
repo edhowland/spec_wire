@@ -81,7 +81,7 @@ describe "SpecWire" do
     end
     
     it "should resolve to the same object" do
-      puts "object.our_id #{@object.our_id}"
+      # puts "object.our_id #{@object.our_id}"
       JSON.parse(RestClient.get("#{server_url}/object/" + 
         @object.our_id.to_s, :cookies =>  @object.session_cookies)).should == 
         {'json_class' => @object.class.name, 
