@@ -1,0 +1,5 @@
+#!/bin/sh
+source ./server_path
+curl -c cookie_jar  -d 'args=['$2']' $server_url/class/$1 2>/dev/null | tee curl.out
+ruby -lne 'puts $_[/\d+$/]' <curl.out >object_id
+echo
