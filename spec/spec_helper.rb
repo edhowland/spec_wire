@@ -6,7 +6,7 @@ require 'spec_wire'
 require 'spec'
 require 'spec/autorun'
 require 'environment'
-require 'const'
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
 Spec::Runner.configure do |config|
   

@@ -1,4 +1,4 @@
-class Foo
+class Myfoo
   attr_reader :val1
   def initialize(val)
     @val1 = val

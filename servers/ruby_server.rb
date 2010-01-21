@@ -14,6 +14,27 @@ def logit(msg)
   end
 end
 
+def instance_variable_to_sym(var)
+  var.to_s[/^@(.*)/,1].to_sym
+end 
+
+def instance_vars_to_hash(object)
+  result = {}
+  object.instance_variables.each do |var|
+    result[instance_variable_to_sym(var)] = object.send instance_variable_to_sym(var)
+  end
+  result
+end
+
+def object_to_json(object, *args)
+    {
+      :json_class => object.class.name,
+      :data => [instance_vars_to_hash(object)],
+      :id => object.object_id
+    }.to_json(*args)
+end
+
+require_relative 'support/env'
 enable :sessions
 
 get '/' do
@@ -55,7 +76,7 @@ get '/class/:name/msg/:message/args/:args' do |name, message, args|
       halt 422, JSON.generate({:error => "Method :#{message} error"})
     end
   rescue LoadError => e
-    halt 404, JSON.generate({:error => "class #{name} not found"})
+    halt 404, JSON.generate({:error => "Class #{name} not found"})
   rescue Exception => e
     halt 422, JSON.generate({:error => e.message})
   end
@@ -71,7 +92,7 @@ post '/class/:name' do |name|
     @@object_store[object.object_id] = object
     session[object.object_id] = object
     logit "POST class:" + object.class.name + " created"
-    object.to_json
+    object_to_json object
   rescue LoadError => e
     halt 404, JSON.generate({:error => "class #{name} not found"})
   rescue Exception => e
@@ -84,7 +105,7 @@ put '/object/:id/msg/:message' do |id, message|
   logit 'PUT session:' + session.inspect
   begin 
     object = @@object_store[id.to_i]
-    raise Sinatra::NotFound.new('Object not found') if object.nil?
+    raise Sinatra::NotFound.new("Object<#{id}> not found") if object.nil?
     unless params[:args] == "[]"
       args = JSON.parse(params[:args])
       JSON.generate([object.send(message, *args)])

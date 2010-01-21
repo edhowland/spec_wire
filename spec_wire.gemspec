@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-07}
+  s.date = %q{2010-01-13}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.extra_rdoc_files = [
@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "config/environment.rb",
-     "cookie.rb",
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
@@ -35,9 +34,12 @@ Gem::Specification.new do |s|
      "lib/spec_wire.rb",
      "run.rb",
      "servers/.gitignore",
+     "servers/Foo.php",
      "servers/app.rb",
      "servers/bar.php",
+     "servers/bar.rb",
      "servers/config.ru",
+     "servers/foo.rb",
      "servers/lib/limonade.php",
      "servers/obj_rest.rb",
      "servers/ruby_server.rb",
@@ -45,13 +47,15 @@ Gem::Specification.new do |s|
      "servers/session.rb",
      "servers/sinatra.log",
      "spec/.gitignore",
+     "spec/error_spec.rb",
+     "spec/foo_spec.rb",
+     "spec/gem_spec.rb",
      "spec/initializer_spec.rb",
      "spec/simple_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/spec_wire_spec.rb",
-     "spec_wire.gemspec",
-     "tmp/class_cache/bar.rb"
+     "spec_wire.gemspec"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -59,10 +63,15 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{spec_wire}
   s.test_files = [
-    "spec/spec_wire_spec.rb",
-     "spec/spec_helper.rb",
+    "spec/bar_spec.rb",
+     "spec/environment_spec.rb",
+     "spec/error_spec.rb",
+     "spec/foo_spec.rb",
+     "spec/gem_spec.rb",
      "spec/initializer_spec.rb",
-     "spec/simple_spec.rb"
+     "spec/simple_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/spec_wire_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -73,21 +82,15 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_development_dependency(%q<yard>, [">= 0"])
       s.add_development_dependency(%q<cucumber>, [">= 0"])
-      s.add_development_dependency(%q<json>, [">= 0"])
-      s.add_development_dependency(%q<rest-client>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<yard>, [">= 0"])
       s.add_dependency(%q<cucumber>, [">= 0"])
-    s.add_dependency(%q<json>, [">= 0"])
-    s.add_dependency(%q<rest-client, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<yard>, [">= 0"])
     s.add_dependency(%q<cucumber>, [">= 0"])
-    s.add_dependency(%q<json>, [">= 0"])
-    s.add_dependency(%q<rest-client, [">= 0"])
   end
 end
 

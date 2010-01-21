@@ -1,14 +1,10 @@
 <?php
   // REST server for SpecWire in PHP
-  function __autoload($class_name) {
-      $file = $class_name . '.php';
-      if (file_exists($file)) {
-        require_once $file;
-      }
-      else {
-        throw new Exception("Class ($class_name) not found");
-      }
+  ini_set('include_path', 'support' . PATH_SEPARATOR .ini_get('include_path'));
+  if (file_exists('support/env.php')) {
+    require_once 'support/env.php';
   }
+
   require_once 'lib/limonade.php';
 
   // use of ErrorException within custom error handler
@@ -104,7 +100,7 @@
 
   dispatch('/', 'get_it');
       function get_it() {
-        return 'GET Status 200 OK';
+        return json_encode(array('status' => 'OK'));
       }
 
   dispatch('/object/:id', 'raw_get_object');

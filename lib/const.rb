@@ -9,9 +9,12 @@ class Module
   def put_needs_method_arg?
     SpecWire::Initializer.config.put_needs_method_arg
   end
+  def class_cache
+    SpecWire::Initializer.config.class_cache
+  end
   
   def const_missing(name)
-    class_cache = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache')
+    # class_cache = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache')
     fname=name.to_s.downcase
     class_path=File.join(class_cache, "#{fname}.rb")
     File.open(class_path, 'w+') do |f|
