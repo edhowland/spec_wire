@@ -14,7 +14,6 @@ class Module
   end
   
   def const_missing(name)
-    # class_cache = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'tmp', 'class_cache')
     fname=name.to_s.downcase
     class_path=File.join(class_cache, "#{fname}.rb")
     File.open(class_path, 'w+') do |f|
