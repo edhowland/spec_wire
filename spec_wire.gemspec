@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-21}
+  s.date = %q{2010-01-22}
   s.default_executable = %q{server}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
@@ -65,7 +65,12 @@ Gem::Specification.new do |s|
      "spec/spec_wire_spec.rb",
      "spec/support/matchers/blank.rb",
      "spec/support/matchers/exist.rb",
-     "spec_wire.gemspec"
+     "spec_wire.gemspec",
+     "templates/config/environment.rb",
+     "templates/server/ruby_server.rb",
+     "templates/server/support/env.php",
+     "templates/server/support/env.rb",
+     "templates/spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
   s.rdoc_options = ["--charset=UTF-8"]
