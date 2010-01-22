@@ -51,7 +51,7 @@ get '/object/:id' do |id|
   object = @@object_store[id.to_i]
   unless object.nil?
     status[200]
-    object_to_json(object)
+    object.to_json
   else
     logit 'object_store ' + @@object_store.inspect
     halt 404, JSON.generate({:error => "object not found"})

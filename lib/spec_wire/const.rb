@@ -17,7 +17,6 @@ class Module
     fname=name.to_s.downcase
     class_path=File.join(class_cache, "#{fname}.rb")
     File.open(class_path, 'w+') do |f|
-      puts "creating #{class_path}" # TODO remove
       f.puts <<-EOC
         require 'rubygems'
         require 'json'

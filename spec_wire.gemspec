@@ -9,9 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-13}
+  s.date = %q{2010-01-21}
+  s.default_executable = %q{server}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
+  s.executables = ["server"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -29,9 +31,9 @@ Gem::Specification.new do |s|
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
-     "lib/const.rb",
-     "lib/initializer.rb",
      "lib/spec_wire.rb",
+     "lib/spec_wire/const.rb",
+     "lib/spec_wire/initializer.rb",
      "run.rb",
      "servers/.gitignore",
      "servers/Foo.php",
@@ -39,22 +41,30 @@ Gem::Specification.new do |s|
      "servers/bar.php",
      "servers/bar.rb",
      "servers/config.ru",
-     "servers/foo.rb",
      "servers/lib/limonade.php",
+     "servers/myfoo.rb",
      "servers/obj_rest.rb",
      "servers/ruby_server.rb",
      "servers/server.php",
      "servers/session.rb",
      "servers/sinatra.log",
+     "servers/support/env.php",
+     "servers/support/env.rb",
      "spec/.gitignore",
+     "spec/blank_spec.rb",
+     "spec/curl_tests/curl_class",
+     "spec/curl_tests/curl_msg",
+     "spec/curl_tests/server_path",
      "spec/error_spec.rb",
-     "spec/foo_spec.rb",
-     "spec/gem_spec.rb",
+     "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
+     "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/spec_wire_spec.rb",
+     "spec/support/matchers/blank.rb",
+     "spec/support/matchers/exist.rb",
      "spec_wire.gemspec"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
@@ -63,15 +73,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{spec_wire}
   s.test_files = [
-    "spec/bar_spec.rb",
-     "spec/environment_spec.rb",
+    "spec/blank_spec.rb",
      "spec/error_spec.rb",
-     "spec/foo_spec.rb",
-     "spec/gem_spec.rb",
+     "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
+     "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
      "spec/spec_helper.rb",
-     "spec/spec_wire_spec.rb"
+     "spec/spec_wire_spec.rb",
+     "spec/support/matchers/blank.rb",
+     "spec/support/matchers/exist.rb"
   ]
 
   if s.respond_to? :specification_version then

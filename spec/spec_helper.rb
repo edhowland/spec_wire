@@ -6,6 +6,8 @@ require 'spec_wire'
 require 'spec'
 require 'spec/autorun'
 require 'environment'
+
+# load extra matchers
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
 Spec::Runner.configure do |config|

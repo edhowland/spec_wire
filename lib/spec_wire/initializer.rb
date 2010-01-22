@@ -24,5 +24,8 @@ module SpecWire
     def self.config
       @@config
     end
+    def self.config=(config)
+      @@config = config
+    end
   end
 end

@@ -64,7 +64,7 @@ describe "SpecWire" do
       id = obj_hash['id'] 
       JSON.parse(RestClient.get("#{server_url}/object/#{id}", :cookies => @resp.cookies)).should == 
         {'json_class' => 'Bar', 
-          'data' => [1,2], 
+          'data' => ["val1" => 1, "val2" => 2], 
           'id' => id}
     end
     it "should send the cookies back in a PUT with args payload=[]" do
@@ -85,7 +85,7 @@ describe "SpecWire" do
       JSON.parse(RestClient.get("#{server_url}/object/" + 
         @object.our_id.to_s, :cookies =>  @object.session_cookies)).should == 
         {'json_class' => @object.class.name, 
-          'data' => [1, 2], 
+          'data' => ["val1" => 1, "val2" => 2], 
           'id' => @object.our_id}   
     end
   end
