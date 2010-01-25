@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
   s.date = %q{2010-01-25}
-  s.default_executable = %q{server}
+  s.default_executable = %q{server.start}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
-  s.executables = ["server"]
+  s.executables = ["server.start"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/server.start",
      "config/environment.rb",
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
@@ -78,16 +79,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{spec_wire}
   s.test_files = [
-    "spec/blank_spec.rb",
-     "spec/error_spec.rb",
+    "spec/spec_wire_spec.rb",
+     "spec/support/matchers/blank.rb",
+     "spec/support/matchers/exist.rb",
+     "spec/spec_helper.rb",
      "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
      "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/spec_wire_spec.rb",
-     "spec/support/matchers/blank.rb",
-     "spec/support/matchers/exist.rb"
+     "spec/blank_spec.rb",
+     "spec/error_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
