@@ -10,10 +10,9 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
   s.date = %q{2010-01-25}
-  s.default_executable = %q{server.start}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
-  s.executables = ["server.start"]
+  s.executables = ["notes.txt", "server.stop", "server.start"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -27,7 +26,9 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/notes.txt",
      "bin/server.start",
+     "bin/server.stop",
      "config/environment.rb",
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
