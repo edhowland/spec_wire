@@ -9,8 +9,8 @@ else
   # start service and note PID, if no service running
   # FIXME: need to handle case where service fails to start
   echo starting service
-#  ./servers/ruby_server.rb >& sinatra.out &
-  sleep 1000 &
+  ./servers/ruby_server.rb >& sinatra.out &
+#  sleep 1000 &
   echo $! > ${pidfile}
 fi
 
