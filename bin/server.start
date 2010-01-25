@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-### check for running server
-if [ ! -f ruby_server.pid ] ; then
-  # start service, if no PID file
-  ./ruby_server.rb >& sinatra.out &
-  echo $? > ruby_server.pid 
-elif ! ps -p $(cat ruby_server.pid) >& /dev/null ; then
-  # start service, if PID file does not contain a valid PID
-  echo start ./ruby_server.rb 2
-else
+pidfile=ruby_server.pid
+
+if [ -f ${pidfile} ] && ps -p $(cat ${pidfile}) >& /dev/null ; then
+  # display note, if service running
   echo server already running
+else
+  # start service, if no service running
+  ./ruby_server.rb >& sinatra.out &
+  echo $! > ${pidfile}
 fi
 
