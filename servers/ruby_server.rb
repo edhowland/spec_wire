@@ -34,7 +34,7 @@ def object_to_json(object, *args)
     }.to_json(*args)
 end
 
-require_relative 'support/env'
+require File.join(File.expand_path(File.dirname(__FILE__)), 'support', 'env')
 enable :sessions
 
 get '/' do
