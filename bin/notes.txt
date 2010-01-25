@@ -3,9 +3,10 @@
 # roadmap
 combine start and stop scripts into single file with options:
 
--- start 
--- stop
--- pidfile
+--start 
+--stop
+--server={servername with path}
+--pidfile={pidfile with path}
 
 use startup scripts in /etc/init.d/ as a model
 
