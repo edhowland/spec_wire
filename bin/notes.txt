@@ -1,0 +1,11 @@
+
+
+# roadmap
+combine start and stop scripts into single file with options:
+
+-- start 
+-- stop
+-- pidfile
+
+use startup scripts in /etc/init.d/ as a model
+
