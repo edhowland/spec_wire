@@ -5,8 +5,11 @@ combine start and stop scripts into single file with options:
 
 --start 
 --stop
+--status
 --server={servername with path}
 --pidfile={pidfile with path}
 
-use startup scripts in /etc/init.d/ as a model
+Use startup scripts in /etc/init.d/ as a model
+Should we enable the scripts to handle more than one service?
+Need to handle case if startup doesn't succeed.
 
