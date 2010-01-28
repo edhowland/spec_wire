@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-01-28}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
-  s.executables = ["notes.txt", "server.stop", "spec_wire", "server.start"]
+  s.executables = ["notes.txt", "server", "server.start", "server.stop", "spec_wire"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -69,11 +69,19 @@ Gem::Specification.new do |s|
      "spec/support/matchers/blank.rb",
      "spec/support/matchers/exist.rb",
      "spec_wire.gemspec",
-     "templates/config/environment.rb",
-     "templates/server/ruby_server.rb",
-     "templates/server/support/env.php",
-     "templates/server/support/env.rb",
-     "templates/spec/spec_helper.rb"
+     "templates/php/spec/server/lib/limonade.php",
+     "templates/php/spec/server/server.php",
+     "templates/php/spec/server/support/env.php",
+     "templates/php/spec/spec_helper.rb",
+     "templates/php/spec/support/matchers/blank.rb",
+     "templates/php/spec/support/matchers/exist.rb",
+     "templates/ruby/spec/bin/server.start",
+     "templates/ruby/spec/bin/server.stop",
+     "templates/ruby/spec/server/ruby_server.rb",
+     "templates/ruby/spec/server/support/env.rb",
+     "templates/ruby/spec/spec_helper.rb",
+     "templates/ruby/spec/support/matchers/blank.rb",
+     "templates/ruby/spec/support/matchers/exist.rb"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -81,16 +89,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{spec_wire}
   s.test_files = [
-    "spec/spec_wire_spec.rb",
-     "spec/support/matchers/blank.rb",
-     "spec/support/matchers/exist.rb",
-     "spec/spec_helper.rb",
+    "spec/blank_spec.rb",
+     "spec/error_spec.rb",
      "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
      "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
-     "spec/blank_spec.rb",
-     "spec/error_spec.rb"
+     "spec/spec_helper.rb",
+     "spec/spec_wire_spec.rb",
+     "spec/support/matchers/blank.rb",
+     "spec/support/matchers/exist.rb"
   ]
 
   if s.respond_to? :specification_version then
