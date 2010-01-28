@@ -15,6 +15,7 @@ begin
     gem.add_development_dependency "cucumber", ">= 0"
     gem.add_dependency("json", ">= 1.2.0")
     gem.add_dependency("rest-client", ">= 1.2.0")
+    gem.add_dependency("sinatra", ">= 0.9.4")
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
