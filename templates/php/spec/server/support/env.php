@@ -49,13 +49,10 @@
         require_once $file;
       }
       else {
-        throw new Exception("Class ($class_name) not found");
+        throw new Exception("Class $class_name ($file) not found");
       }
   }
   
-  
-  
-  // c5 site specific include path
-  prepend_include_path('../../helpers');
+  prepend_include_path('..');
 
 ?>

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+pidfile=./server/ruby_server.pid
+
+if ps -p $(cat ${pidfile} 2> /dev/null) >& /dev/null ; then
+  # stop service and remove PID file, if service running
+  echo stopping service
+  kill -s SIGINT $(cat ${pidfile}) &&
+  rm ${pidfile}
+else
+  # display note, if no service running
+  echo service not running
+fi
+

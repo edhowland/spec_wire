@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+pidfile=./server/ruby_server.pid
+
+if ps -p $(cat ${pidfile} 2> /dev/null) >& /dev/null ; then
+  # display note, if service running
+  echo service already running
+else
+  # start service and note PID, if no service running
+  # FIXME: need to handle case where service fails to start
+  echo starting service
+  ./server/ruby_server.rb >& sinatra.out &
+#  sleep 1000 &
+  echo $! > ${pidfile}
+fi
+
