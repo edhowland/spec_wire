@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-27}
+  s.date = %q{2010-01-28}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.executables = ["notes.txt", "server.stop", "server.start"]
@@ -102,12 +102,14 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<cucumber>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 1.2.0"])
       s.add_runtime_dependency(%q<rest-client>, [">= 1.2.0"])
+      s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<yard>, [">= 0"])
       s.add_dependency(%q<cucumber>, [">= 0"])
       s.add_dependency(%q<json>, [">= 1.2.0"])
       s.add_dependency(%q<rest-client>, [">= 1.2.0"])
+      s.add_dependency(%q<sinatra>, [">= 0.9.4"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
@@ -115,6 +117,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<cucumber>, [">= 0"])
     s.add_dependency(%q<json>, [">= 1.2.0"])
     s.add_dependency(%q<rest-client>, [">= 1.2.0"])
+    s.add_dependency(%q<sinatra>, [">= 0.9.4"])
   end
 end
 
