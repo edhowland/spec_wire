@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# generator.rb handles copying a dir structure from a template
+# to a destination folder, checking for existing dirs and files
+# along the way. Command line options are turned into variables.
+# Any files with the .erb suffix are run through ERb first allowing
+# for the substitution of variables or looping or coditionals first.
+
+require 'getoptlong'
+require 'fileutils'
+require 'erb'
+
+# handles long option names
+opts = GetoptLong.new(
+ ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
+ ['--server-dir', '-d', GetoptLong::REQUIRED_ARGUMENT],
+ ['--php', GetoptLong::NO_ARGUMENT],
+ ['--force', GetoptLong::NO_ARGUMENT] # forces overwriting of files
+)
+
+# loops through these setting variables, flags, etc
+opts.each do |opt, arg|
+ # something
+end
+
+# looks at template folder
+# uses mkdir_p ?, File.exists? etc.
+# if file extension ends with '.erb' then:
+
+# read file into str
+str = ''
+template = ERB.new str
+# open output file for writing
+# f.write template.result(binding)
+
