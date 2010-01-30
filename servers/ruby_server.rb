@@ -8,9 +8,15 @@ require 'pp'
 
 class ArgumentsMissing < StandardError; end
 
-def logit(msg)
+def logit(msg, *args)
   File.open("spec_wire.log", "a+") do |f|
-    f.puts(msg)
+    f.write(msg)
+    begin
+      f.write('|')
+      f.write(args.map {|arg| arg.inspect}.join(','))
+      f.write('|')
+    end unless args.length == 0
+    f.puts
   end
 end
 
@@ -61,7 +67,7 @@ end
 # execute a class level method
 get '/class/:name/msg/:message/args/:args' do |name, message, args|
   begin
-    require name.downcase
+    load_class_file name # our autoloader
     # TODO how to handle nil returned from method?
     klass = Kernel.const_get(name)
     unless args.nil? or args == "[]"
@@ -76,6 +82,7 @@ get '/class/:name/msg/:message/args/:args' do |name, message, args|
       halt 422, JSON.generate({:error => "Method :#{message} error"})
     end
   rescue LoadError => e
+    logit "class not found #{name} in #{name.to_underscores}.rb"
     halt 404, JSON.generate({:error => "Class #{name} not found"})
   rescue Exception => e
     halt 422, JSON.generate({:error => e.message})
@@ -85,7 +92,7 @@ end
 # creates a new class and returns it via json {:id => object_id, :attr => 'value_or_nil'}
 post '/class/:name' do |name|
   begin
-    require name.downcase # our form of autoloading
+    load_class_file name # our form of autoloading de-CamelCased file names
     raise ArgumentsMissing.new("args parameter missing") if params[:args].nil?
     args = JSON.parse(params[:args])
     object = Kernel.const_get(name).new(*args)
@@ -94,7 +101,8 @@ post '/class/:name' do |name|
     logit "POST class:" + object.class.name + " created"
     object_to_json object
   rescue LoadError => e
-    halt 404, JSON.generate({:error => "class #{name} not found"})
+    logit "class not found #{name} in #{name.to_underscores}.rb"
+    halt 404, JSON.generate({:error => "Class #{name} not found"})
   rescue Exception => e
     halt 422, JSON.generate({:error => e.message})
   end

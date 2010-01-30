@@ -35,7 +35,7 @@
    * @param    bool     $capitalise_first_char   If true, capitalise the first char in $str
    * @return   string                              $str translated into camel caps
    */
-  function to_camel_case($str, $capitalise_first_char = false) {
+  function to_camel_case($str, $capitalise_first_char = true) {
     if($capitalise_first_char) {
       $str[0] = strtoupper($str[0]);
     }

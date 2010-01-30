@@ -29,14 +29,9 @@ class Module
               @meta = JSON.parse(resp)
               @our_id = @meta['id']
               @session_cookies = resp.cookies
-            rescue RestClient::ResourceNotFound => e
-              error = JSON.parse(e.response.body)
-              raise StandardError.new(error["error"])
-            rescue RestClient::ExceptionWithResponse => e
-              error = JSON.parse(e.response.body)
-              raise StandardError.new(error["error"])
             rescue RestClient::Exception => e
-              "base REST exception " + e.message
+              error = JSON.parse(e.http_body)
+              raise StandardError.new(error["error"])
             rescue Exception => e
               "exception occured " + e.message
             end
@@ -45,14 +40,9 @@ class Module
           def self.method_missing(method_name, *args)
             begin
               JSON.parse(RestClient.get('#{server_url}/class/#{name}/msg/' + method_name.to_s + '/args/' + CGI.escape(JSON.generate(args))))[0]
-            rescue RestClient::ResourceNotFound => e
-              error = JSON.parse(e.response.body)
-              raise StandardError.new(error["error"])
-            rescue RestClient::ExceptionWithResponse => e
-              error = JSON.parse(e.response.body)
-              raise StandardError.new(error["error"])
             rescue RestClient::Exception => e
-              "base REST exception " + e.message
+              error = JSON.parse(e.http_body)
+              raise StandardError.new(error["error"])
             rescue Exception => e
               "exception occured " + e.message
             end
@@ -64,11 +54,9 @@ class Module
             begin
               JSON.parse(RestClient.post('#{server_url}/object/' + @our_id.to_s + '/msg/' + method_name.to_s, 
                 {:args => JSON.generate(args), :_method => 'PUT'}, {:cookies => @session_cookies}))[0]
-            rescue RestClient::ExceptionWithResponse => e
-              error = JSON.parse(e.response.body)
-              raise StandardError.new(error["error"])
             rescue RestClient::Exception => e
-              "base REST exception " + e.message
+              error = JSON.parse(e.http_body)
+              raise StandardError.new(error["error"])
             rescue Exception => e
               "exception occured " + e.message
             end
@@ -80,11 +68,9 @@ class Module
             begin
               JSON.parse(RestClient.put('#{server_url}/object/' + @our_id.to_s + '/msg/' + method_name.to_s, 
                 {:args => JSON.generate(args)}, {:cookies => @session_cookies}))[0]
-              rescue RestClient::ExceptionWithResponse => e
-                error = JSON.parse(e.response.body)
-                raise StandardError.new(error["error"])
-              rescue RestClient::Exception => e
-                "base REST exception " + e.message
+            rescue RestClient::Exception => e
+              error = JSON.parse(e.http_body)
+              raise StandardError.new(error["error"])
             rescue Exception => e
               "exception occured " + e.message
             end
