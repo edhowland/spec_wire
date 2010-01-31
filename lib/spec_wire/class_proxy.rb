@@ -26,9 +26,12 @@ class ClassProxy
       @session_cookies = resp.cookies
     rescue RestClient::Exception => e
       error = JSON.parse(e.http_body)
-      raise StandardError.new(error["error"])
-    # rescue Exception => e
-    #   "exception occured " + e.message
+      klass = Kernel.const_get(error["exception"])
+      puts error
+      raise klass.new(error["error"])
+    rescue => e
+      puts e
+      puts "exception occured " + e.message
     end
   end
   

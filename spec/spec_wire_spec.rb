@@ -113,4 +113,12 @@ describe "SpecWire" do
       
     end
   end
+  describe "Getting the marchalled exception" do
+    it "should report LoadError" do
+      lambda {Xzzy.new}.should raise_error(LoadError)
+    end
+    it "should raise ArgumentError" do
+      lambda {Bar.new}.should raise_error(ArgumentError)
+    end
+  end
 end
