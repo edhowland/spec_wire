@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-28}
+  s.date = %q{2010-01-30}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
-  s.executables = ["notes.txt", "server", "server.start", "server.stop", "spec_wire"]
+  s.executables = ["notes.txt", "server.start", "server.stop", "spec_wire"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
      "servers/bar.php",
      "servers/bar.rb",
      "servers/config.ru",
+     "servers/foo_baz.rb",
      "servers/lib/limonade.php",
      "servers/myfoo.rb",
      "servers/obj_rest.rb",
@@ -68,6 +69,7 @@ Gem::Specification.new do |s|
      "spec/spec_wire_spec.rb",
      "spec/support/matchers/blank.rb",
      "spec/support/matchers/exist.rb",
+     "spec/support_spec.rb",
      "spec_wire.gemspec",
      "templates/php/spec/server/lib/limonade.php",
      "templates/php/spec/server/server.php",
@@ -98,7 +100,8 @@ Gem::Specification.new do |s|
      "spec/spec_helper.rb",
      "spec/spec_wire_spec.rb",
      "spec/support/matchers/blank.rb",
-     "spec/support/matchers/exist.rb"
+     "spec/support/matchers/exist.rb",
+     "spec/support_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

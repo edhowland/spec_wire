@@ -102,9 +102,9 @@ post '/class/:name' do |name|
     object_to_json object
   rescue LoadError => e
     logit "class not found #{name} in #{name.to_underscores}.rb"
-    halt 404, JSON.generate({:error => "Class #{name} not found"})
+    halt 404, JSON.generate({:exception => 'LoadError', :error => "Class #{name} not found"})
   rescue Exception => e
-    halt 422, JSON.generate({:error => e.message})
+    halt 422, JSON.generate({:exeption => e.class.name, :error => e.message})
   end
 end
 
