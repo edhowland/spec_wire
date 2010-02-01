@@ -8,7 +8,7 @@
   require_once 'lib/limonade.php';
 
   // use of ErrorException within custom error handler
-  // not built in to later versions of PHP??/
+  // not built in to later versions of PHP???
   function exception_error_handler($errno, $errstr, $errfile, $errline ) {
     logit("(possible) error handled:" . $errstr . "($errno)" . " in => $errfile($errline)");
     if ($errno < 512) {
@@ -20,13 +20,13 @@
   function not_found($errno, $errstr, $errfile, $errline) {
     $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit('not found ' . $errmsg);
-    return json_encode(array("error" => $errmsg));
+    return json_encode(array("exception" => "LoadError", "error" => $errmsg));
   }
   
   function server_error($errno, $errstr, $errfile, $errline) {
     $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("srver error:" . $errmsg);
-    return json_encode(array("error" => $errmsg));
+    return json_encode(array("exception" => "ServerError", "error" => $errmsg));
   }
 
   error(E_LIM_HTTP, 'my_http_errors');
@@ -35,7 +35,7 @@
     $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("http error:" . $errmsg);
     status($errno);
-    return json_encode(array("error" => $errmsg));
+    return json_encode(array("exception" => "ServerError", "error" => $errmsg));
   }
 
   error(E_LIM_PHP, 'my_php_errors');
@@ -44,7 +44,7 @@
     $errmsg = "error occured($errno): $errstr in=>$errfile:$errline"; 
     logit("php error:" . $errmsg);
     status(422);
-    return json_encode(array("error" => $errmsg));
+    return json_encode(array("exception" => "ServerError", "error" => $errmsg));
   }
   
   
@@ -130,11 +130,14 @@
         $result = $object->$message();
         return json_encode(array($result));
       }
-      catch (Exception $e) {
-        logit('Exception ' . $e->getMessage());
-        halt(422, json_encode(array("error" => "Error processing request :" . $e->getMessage())));
-        return json_encode(array('error' => $e->getMessage()));
+      catch (LoadError $e) P
+        halt(422, json_encode(array("exception" => "LoadError", "error" => $e->getMessage())));
       }
+      catch(Exception $e) {
+        logit('Exception ' . $e->getMessage());
+        halt(422, json_encode(array("exception" => get_class($e), "error" => $e->getMessage())));
+        // return json_encode(array('error' => $e->getMessage()));
+        }
     }
       
    dispatch_post('/class/:name', 'new_object');
@@ -170,10 +173,13 @@
           
           return json_encode($results);
         }
+        catch (LoadError $e) P
+          halt(422, json_encode(array("exception" => "LoadError", "error" => $e->getMessage())));
+        }
         catch(Exception $e) {
           logit('Exception ' . $e->getMessage());
-          halt(422, json_encode(array("error" => $e->getMessage())));
-          return json_encode(array('error' => $e->getMessage()));
+          halt(422, json_encode(array("exception" => get_class($e), "error" => $e->getMessage())));
+          // return json_encode(array('error' => $e->getMessage()));
           }
       }
       
@@ -241,11 +247,11 @@
             return json_encode(array($result));
           }
         }
-        catch (Exception $e) {
-          logit('Exception occured :' . $e->getMessage());
-          halt(422, json_encode(array("error" => $e->getMessage())));
-          return json_encode(array('error' => $e->getMessage()));
-        }
+        catch(Exception $e) {
+          logit('Exception ' . $e->getMessage());
+          halt(422, json_encode(array("exception" => get_class($e), "error" => $e->getMessage())));
+          // return json_encode(array('error' => $e->getMessage()));
+          }
       }
       
   run();

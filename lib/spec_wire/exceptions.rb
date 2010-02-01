@@ -6,3 +6,5 @@ class SpecWireExeption < StandardError; end
 class ObjectNotFound < SpecWireExeption; end
 
 class MethodError < SpecWireExeption; end
+
+class ServerError < SpecWireExeption; end
