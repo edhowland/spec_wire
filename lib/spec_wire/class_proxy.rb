@@ -17,6 +17,25 @@ class ClassProxy
     SpecWire::Initializer.config.put_needs_method_arg
   end
 
+  def handle_other_exeption(e, additional_message='')
+    raise StandardError.new("SpecWire " + additional_message + ": " + e.message)
+  end
+
+  def handle_rest_exception(e)
+    begin
+      error = JSON.parse(e.http_body)
+      unless error.nil? or error['exception'].nil?
+        klass = Kernel.const_get(error["exception"])
+        raise klass.new(error["error"])
+      else
+        handle_pther_exception e, "Unknown exception"
+      end
+    rescue JSON::ParserError => e
+      raise StandardError('SpecWire JSON decoding: ' + e.message)
+    end
+  end
+
+
   def initialize(*args)
     begin
       resp = RestClient.post("#{server_url}/class/#{self.class.name}", :args => JSON.generate(args))
@@ -25,13 +44,9 @@ class ClassProxy
       @our_id = @meta['id']
       @session_cookies = resp.cookies
     rescue RestClient::Exception => e
-      error = JSON.parse(e.http_body)
-      klass = Kernel.const_get(error["exception"])
-      puts error
-      raise klass.new(error["error"])
-    rescue => e
-      puts e
-      puts "exception occured " + e.message
+      handle_rest_exception e
+    rescue SpecWireException => e
+      handle_other_exception e
     end
   end
   
@@ -41,8 +56,6 @@ class ClassProxy
     rescue RestClient::Exception => e
       error = JSON.parse(e.http_body)
       raise StandardError.new(error["error"])
-    # rescue Exception => e
-    #   "exception occured " + e.message
     end
   end
   

@@ -79,13 +79,13 @@ get '/class/:name/msg/:message/args/:args' do |name, message, args|
     unless result.nil?
       JSON.generate([result])
     else
-      halt 422, JSON.generate({:error => "Method :#{message} error"})
+      halt 422, JSON.generate({:exception => 'MethodError', :error => "#{message}: error"})
     end
   rescue LoadError => e
     logit "class not found #{name} in #{name.to_underscores}.rb"
-    halt 404, JSON.generate({:error => "Class #{name} not found"})
+    halt 404, JSON.generate({:exception => 'LoadError', :error => "Class #{name} not found"})
   rescue Exception => e
-    halt 422, JSON.generate({:error => e.message})
+    halt 422, JSON.generate({:exception => e.class.name, :error => e.message})
   end
 end
 
@@ -104,7 +104,6 @@ post '/class/:name' do |name|
     logit "class not found #{name} in #{name.to_underscores}.rb"
     halt 404, JSON.generate({:exception => 'LoadError', :error => "Class #{name} not found"})
   rescue Exception => e
-    # logit "Exception #{name}", e.class.name
     halt 422, JSON.generate({:exception => e.class.name, :error => e.message})
   end
 end
@@ -122,8 +121,8 @@ put '/object/:id/msg/:message' do |id, message|
       JSON.generate([object.send(message)])
     end
   rescue Sinatra::NotFound => e
-    halt 404, JSON.generate({:error => e.message})
+    halt 404, JSON.generate({:exception => "ObjectNotFound", :error => e.message})
   rescue Exception => e
-    halt 422, JSON.generate({:error => e.message})
+    halt 422, JSON.generate({:exception => e.class.name, :error => e.message})
   end
 end
