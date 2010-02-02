@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-02-02}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
-  s.executables = ["notes.txt", "server.start", "server.stop", "spec_wire"]
+  s.executables = ["server.start", "server.stop", "spec_wire"]
   s.extra_rdoc_files = [
     "ChangeLog",
      "LICENSE",
@@ -26,11 +26,11 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "bin/notes.txt",
      "bin/server.start",
      "bin/server.stop",
      "bin/spec_wire",
      "config/environment.rb",
+     "doc/notes.txt",
      "features/spec_wire.feature",
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
