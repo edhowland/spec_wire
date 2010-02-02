@@ -1,2 +1,2 @@
 # add your server path here - should match config/environment.rb
-server_url=http://localhost/~edh/limonade/server.php
+server_url=http://localhost:4567

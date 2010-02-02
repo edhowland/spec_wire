@@ -1,4 +1,4 @@
 #!/bin/sh
-source ./server_path
+source ./ruby_server_path
 object_id=`cat object_id`
 curl -b cookie_jar -X PUT  -d 'args=['$2']' $server_url/object/$object_id/msg/$1; echo

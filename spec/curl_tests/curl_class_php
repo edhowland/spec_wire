@@ -1,5 +1,5 @@
 #!/bin/sh
-source ./server_path
+source ./php_server_path
 curl -c cookie_jar  -d 'args=['$2']' $server_url/class/$1 2>/dev/null | tee curl.out
 ./parse_id.rb curl.out object_id
 echo

@@ -54,22 +54,33 @@ class ClassProxy
     begin
       JSON.parse(RestClient.get("#{server_url}/class/#{self.name}/msg/" + method_name.to_s + '/args/' + CGI.escape(JSON.generate(args))))[0]
     rescue RestClient::Exception => e
-      error = JSON.parse(e.http_body)
-      raise StandardError.new(error["error"])
+      handle_rest_exception e
+    rescue SpecWireException => e
+      handle_other_exception e
     end
   end
   
+  def default_payload(args)
+    {:args => JSON.generate(args)}
+  end
+  
+  def payload(args)
+    default_payload(args).merge(put_needs_method_arg? ? {:_method=>'PUT'}  : {})
+  end
+  
   def method_missing(method_name, *args)
-    additional_args = {}
     begin
-      additional_args = {:method => 'PUT'} if put_needs_method_arg?
+      if put_needs_method_arg?
+      JSON.parse(RestClient.post("#{server_url}/object/" + @our_id.to_s + '/msg/' + method_name.to_s, 
+        payload(args), {:cookies => @session_cookies}))[0]
+    else
       JSON.parse(RestClient.put("#{server_url}/object/" + @our_id.to_s + '/msg/' + method_name.to_s, 
-        {:args => JSON.generate(args)}.merge(additional_args), {:cookies => @session_cookies}))[0]
+        payload(args), {:cookies => @session_cookies}))[0]
+    end
     rescue RestClient::Exception => e
-      error = JSON.parse(e.http_body)
-      raise StandardError.new(error["error"])
-    # rescue Exception => e
-    #   "exception occured " + e.message
+      handle_rest_exception e
+    rescue SpecWireException => e
+      handle_other_exception e
     end
   end
   

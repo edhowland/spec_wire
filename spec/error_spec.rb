@@ -12,4 +12,13 @@ describe "Error Handling" do
       lambda {@obj.no_method(nil)}.should raise_error 
     end
   end
+  describe "Getting the marshalled exception" do
+    it "should report LoadError" do
+      lambda {Xzzy.new}.should raise_error(LoadError)
+    end
+    it "should raise ArgumentError for Bar.new" do
+      lambda {Bar.new}.should raise_error(ArgumentError)
+    end
+  end
+  
 end

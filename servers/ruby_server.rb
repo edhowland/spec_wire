@@ -35,7 +35,7 @@ end
 def object_to_json(object, *args)
     {
       :json_class => object.class.name,
-      :data => [instance_vars_to_hash(object)],
+      :data => instance_vars_to_hash(object),
       :id => object.object_id
     }.to_json(*args)
 end

@@ -8,3 +8,8 @@ class ObjectNotFound < SpecWireExeption; end
 class MethodError < SpecWireExeption; end
 
 class ServerError < SpecWireExeption; end
+
+class HttpError < SpecWireExeption; end
+
+class LanguageError < SpecWireExeption; end
+

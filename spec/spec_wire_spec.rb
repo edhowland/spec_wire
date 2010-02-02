@@ -64,7 +64,7 @@ describe "SpecWire" do
       id = obj_hash['id'] 
       JSON.parse(RestClient.get("#{server_url}/object/#{id}", :cookies => @resp.cookies)).should == 
         {'json_class' => 'Bar', 
-          'data' => ["val1" => 1, "val2" => 2], 
+          'data' => {"val1" => 1, "val2" => 2}, 
           'id' => id}
     end
     it "should send the cookies back in a PUT with args payload=[]" do
@@ -85,40 +85,8 @@ describe "SpecWire" do
       JSON.parse(RestClient.get("#{server_url}/object/" + 
         @object.our_id.to_s, :cookies =>  @object.session_cookies)).should == 
         {'json_class' => @object.class.name, 
-          'data' => ["val1" => 1, "val2" => 2], 
+          'data' => {"val1" => 1, "val2" => 2}, 
           'id' => @object.our_id}   
-    end
-  end
-  describe "modifying the state of the same object" do
-    it "should set an attribute and get it back" do
-      @object.val1 = 99
-      @object.val1.should == 99
-    end
-  end
-  describe "sending complex objects and getting them back" do
-    it "should send a Hash" do
-      @object.val1 = {:size => 1000}
-      @object.val1.should == {'size' => 1000}
-    end
-    
-    it "should send a complex hash" do
-      @object.val1 = {:gum => 'fatal', :inner => 
-          {:really => {
-              :something => 'fishy'
-          }}}
-      @object.val1.should == {'gum' => 'fatal', 'inner' => 
-          {'really' => {
-              'something' => 'fishy'
-          }}}
-      
-    end
-  end
-  describe "Getting the marshalled exception" do
-    it "should report LoadError" do
-      lambda {Xzzy.new}.should raise_error(LoadError)
-    end
-    it "should raise ArgumentError" do
-      lambda {Bar.new}.should raise_error(ArgumentError)
     end
   end
 end
