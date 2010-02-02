@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{spec_wire}
-  s.version = "0.3.3"
+  s.version = "0.3.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-01-30}
+  s.date = %q{2010-02-02}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.executables = ["notes.txt", "server.start", "server.stop", "spec_wire"]
@@ -35,7 +35,9 @@ Gem::Specification.new do |s|
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
      "lib/spec_wire.rb",
+     "lib/spec_wire/class_proxy.rb",
      "lib/spec_wire/const.rb",
+     "lib/spec_wire/exceptions.rb",
      "lib/spec_wire/initializer.rb",
      "run.rb",
      "servers/.gitignore",
@@ -46,6 +48,7 @@ Gem::Specification.new do |s|
      "servers/config.ru",
      "servers/foo_baz.rb",
      "servers/lib/limonade.php",
+     "servers/myfoo.php",
      "servers/myfoo.rb",
      "servers/obj_rest.rb",
      "servers/ruby_server.rb",
@@ -57,11 +60,18 @@ Gem::Specification.new do |s|
      "spec/.gitignore",
      "spec/blank_spec.rb",
      "spec/curl_tests/curl_class",
-     "spec/curl_tests/curl_msg",
+     "spec/curl_tests/curl_class_php",
+     "spec/curl_tests/curl_class_ruby",
+     "spec/curl_tests/curl_msg_php",
+     "spec/curl_tests/curl_msg_ruby",
+     "spec/curl_tests/parse_id.rb",
+     "spec/curl_tests/php_server_path",
+     "spec/curl_tests/ruby_server_path",
      "spec/curl_tests/server_path",
      "spec/error_spec.rb",
      "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
+     "spec/modify_spec.rb",
      "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
      "spec/spec.opts",
@@ -92,9 +102,11 @@ Gem::Specification.new do |s|
   s.summary = %q{spec_wire}
   s.test_files = [
     "spec/blank_spec.rb",
+     "spec/curl_tests/parse_id.rb",
      "spec/error_spec.rb",
      "spec/exist_spec.rb",
      "spec/initializer_spec.rb",
+     "spec/modify_spec.rb",
      "spec/myfoo_spec.rb",
      "spec/simple_spec.rb",
      "spec/spec_helper.rb",
