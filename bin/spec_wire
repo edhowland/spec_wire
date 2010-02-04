@@ -7,13 +7,15 @@
 
 require 'getoptlong'
 require 'fileutils'
+require 'pathname'
 require 'erb'
 
 include FileUtils
 
 # defaults
 current_target='php'
-destination=Dir.pwd
+server_url=nil
+
 @_force = false
 def force?
   @_force
@@ -21,27 +23,67 @@ end
 def force!
   @_force=true
 end
+@_dry_run=false
+def dry_run?
+  @_dry_run 
+end
+def dry_run!
+  @_dry_run=true
+end
+
+def die(msg, *args)
+  puts msg + (args.empty? ? '' : ' |' + args.map {|e| e.inspect}.join('|'))
+  exit
+end
 
 # handles long option names
 opts = GetoptLong.new(
  ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
- ['--server-dir', '-d', GetoptLong::REQUIRED_ARGUMENT],
  ['--php', GetoptLong::NO_ARGUMENT],
  ['--ruby', GetoptLong::NO_ARGUMENT],
+ ['--dry-run', '-d', GetoptLong::NO_ARGUMENT],
  ['--force', '-f', GetoptLong::NO_ARGUMENT] # forces overwriting of files
 )
 
 # loops through these setting variables, flags, etc
 opts.each do |opt, arg|
   case opt
-  when '--server-dir'
-    destination = File.expand_path(arg)
   when '--php'
     current_target='php'
   when '--ruby'
     current_target='ruby'
+  when '--server-url'
+    server_url=arg
   when '--force'
     force!
+  when '--dry-run'
+    dry_run!
+  end
+end
+
+die "must supply a path" if ARGV.empty?
+destination = File.expand_path(ARGV.shift)
+die "path must be a directory" unless File.directory? destination
+
+
+def split_path(path)
+  a=[]
+  p=Pathname.new path
+  p.each_filename {|d| a << d}
+  a
+end
+
+if server_url.nil?
+  path_bits = split_path(destination)
+  path_bits.shift
+  user = '~' + path_bits[0]
+  case current_target
+    when 'php'
+      server_url='http://localhost/' + File.join(user, path_bits[2..-1], "spec", "server", "server.php")
+    when 'ruby'
+      server_url='http://localhost:4567'
+    else
+      die "target language #{current_target} not yet implemented" 
   end
 end
 
@@ -50,11 +92,13 @@ def conditionally_execute(cmd, dfile, *args)
     puts "exists " + dfile
   else
     puts "create #{dfile}"
-    self.send cmd, *args
+    self.send cmd, *args unless dry_run?
   end
 end
 
 template_dir=File.expand_path File.join(File.expand_path(File.dirname(__FILE__)), "..", "templates", current_target)
+
+puts "Performing dry run to #{destination}" if dry_run?
 
 # looks at template folder
 Dir.chdir(template_dir) do |path|
@@ -77,4 +121,16 @@ str = ''
 template = ERB.new str
 # open output file for writing
 # f.write template.result(binding)
+
+puts <<EOM
+===================
+  Thank you for using spec_wire!
+  Now configure your feature/support/env.rb and spec/spec_helper.rb
+  with:
+  SpecWire::Initializer.run do |config|
+    config.server_url='#{server_url}'
+    ...
+  end
+===================
+EOM
 
