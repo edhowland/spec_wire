@@ -5,6 +5,38 @@
 # Any files with the .erb suffix are run through ERb first allowing
 # for the substitution of variables or looping or coditionals first.
 
+$usage = %Q{
+ == Synopsis
+ spec_wire # generates RSpec and Cucumber directory
+ structure for use with spec_wire gem. Installs the
+ correct RESTful server for the specified target language.
+ This command copies the specified directroy tree from the 
+ spec_wire/templates folder.  
+ == Usage
+ spec_wire [--help] [--dry_run] [--version] [--force] [--ruby] [--php] [--server url url] directory
+
+ == Options
+  --help, -h        # print out this message
+  --server_url, -u  # specify the URL for the server [default: http://localhost/~user/path/spec/server/server.php]
+  --php             # use PHP template [default]
+  --ruby            # use Ruby template
+  --dry-run, -d     # does not copy the template, but shows what it would do
+  --force, -f,      # forces overwriting files if they exist. Useful for 
+                     installing updates from this gem.
+ --version, -v      # prints out the version of this gem.
+  == Examples
+  spec_wire .      # => creates ./spec and ./feature directories from PHP template
+  spec_wire --ruby rbfolder  # => creates rbfolder/spec and rbfolder/features 
+                               from Ruby template
+  spec_wire -d -f  # => shows what would spec_wire would forecfully create 
+                     but doesn't do anything
+  spec_wire -v     # prints out the current version of the spec_wire gem
+  spec_wire -u http://server.com/app/spec/server/server.php # => copies PHP 
+                    template and replaces the server URL
+}
+
+
+
 require 'getoptlong'
 require 'fileutils'
 require 'pathname'
@@ -36,18 +68,24 @@ def die(msg, *args)
   exit
 end
 
+
+
 # handles long option names
 opts = GetoptLong.new(
- ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
- ['--php', GetoptLong::NO_ARGUMENT],
- ['--ruby', GetoptLong::NO_ARGUMENT],
- ['--dry-run', '-d', GetoptLong::NO_ARGUMENT],
- ['--force', '-f', GetoptLong::NO_ARGUMENT] # forces overwriting of files
+  ['--help', '-h', GetoptLong::NO_ARGUMENT], 
+  ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
+  ['--php', GetoptLong::NO_ARGUMENT],
+  ['--ruby', GetoptLong::NO_ARGUMENT],
+  ['--dry-run', '-d', GetoptLong::NO_ARGUMENT],
+  ['--force', '-f', GetoptLong::NO_ARGUMENT],
+  ['--version', '-v', GetoptLong::NO_ARGUMENT]
 )
 
 # loops through these setting variables, flags, etc
 opts.each do |opt, arg|
   case opt
+  when '--help'
+    die $usage
   when '--php'
     current_target='php'
   when '--ruby'
@@ -58,6 +96,12 @@ opts.each do |opt, arg|
     force!
   when '--dry-run'
     dry_run!
+  when '--version'
+    version = '0.3'
+    File.open(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'VERSION')) do |f|
+      version = f.read.chomp
+    end
+    die "Version spec_wire-#{version}"
   end
 end
 
@@ -113,7 +157,7 @@ Dir.chdir(template_dir) do |path|
   end
   
 end
-# uses mkdir_p ?, File.exists? etc.
+# TODO make the folloing happen
 # if file extension ends with '.erb' then:
 
 # read file into str
@@ -122,9 +166,11 @@ template = ERB.new str
 # open output file for writing
 # f.write template.result(binding)
 
+was_dry=(dry_run? ? 'Although just a dry run this time, this is what would have happended.' : '')
 puts <<EOM
 ===================
   Thank you for using spec_wire!
+  #{was_dry}
   Now configure your feature/support/env.rb and spec/spec_helper.rb
   with:
   SpecWire::Initializer.run do |config|
