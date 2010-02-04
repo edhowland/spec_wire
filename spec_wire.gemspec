@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-02-02}
+  s.date = %q{2010-02-03}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.executables = ["server.start", "server.stop", "spec_wire"]
@@ -31,7 +31,9 @@ Gem::Specification.new do |s|
      "bin/spec_wire",
      "config/environment.rb",
      "doc/notes.txt",
+     "features/addition.feature",
      "features/spec_wire.feature",
+     "features/step_definitions/addition.steps.rb",
      "features/step_definitions/spec_on_steps.rb",
      "features/support/env.rb",
      "lib/spec_wire.rb",

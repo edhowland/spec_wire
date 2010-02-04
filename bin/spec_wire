@@ -9,20 +9,66 @@ require 'getoptlong'
 require 'fileutils'
 require 'erb'
 
+include FileUtils
+
+# defaults
+current_target='php'
+destination=Dir.pwd
+@_force = false
+def force?
+  @_force
+end
+def force!
+  @_force=true
+end
+
 # handles long option names
 opts = GetoptLong.new(
  ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
  ['--server-dir', '-d', GetoptLong::REQUIRED_ARGUMENT],
  ['--php', GetoptLong::NO_ARGUMENT],
- ['--force', GetoptLong::NO_ARGUMENT] # forces overwriting of files
+ ['--ruby', GetoptLong::NO_ARGUMENT],
+ ['--force', '-f', GetoptLong::NO_ARGUMENT] # forces overwriting of files
 )
 
 # loops through these setting variables, flags, etc
 opts.each do |opt, arg|
- # something
+  case opt
+  when '--server-dir'
+    destination = File.expand_path(arg)
+  when '--php'
+    current_target='php'
+  when '--ruby'
+    current_target='ruby'
+  when '--force'
+    force!
+  end
 end
 
+def conditionally_execute(cmd, dfile, *args)
+  if (File.exists? args.last and !force?) or File.directory? args.last
+    puts "exists " + dfile
+  else
+    puts "create #{dfile}"
+    self.send cmd, *args
+  end
+end
+
+template_dir=File.expand_path File.join(File.expand_path(File.dirname(__FILE__)), "..", "templates", current_target)
+
 # looks at template folder
+Dir.chdir(template_dir) do |path|
+  Dir.glob '**/*' do |file|
+    src=File.join(path,file)
+    dest=File.join(destination, file)
+    if File.directory? src
+      conditionally_execute :mkdir_p, file, dest
+    else
+      conditionally_execute :cp, file, src, dest
+    end
+  end
+  
+end
 # uses mkdir_p ?, File.exists? etc.
 # if file extension ends with '.erb' then:
 

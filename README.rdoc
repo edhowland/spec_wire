@@ -5,8 +5,41 @@ over HTTP using REST and JSON for parameter encoding. The goal is to maintain a
 normal workflow of test/fail/code/pass/refactor/pass or Red-Green-Refactor using
 Cucumber and RSpec and writing the code in your target language.
 
-Languages to be supported are PHP and C++. Hopefully Python, Perl and C# can be
+spec_wire can also be used with other frameworks like bacon, Shoulda RubySpec.
+
+Languages to be supported are PHP and C#. There is currently only a PHP server. Hopefully Python, Perl and C# can be
 added. The reference server is in Ruby and runs on Sinatra.
+
+== Install
+sudo gem install spec_wire
+
+Go to your target language folder and copy the server for you language.
+
+[Note the spec_wire generator will make this step easier]
+For example:
+
+cp -r /usr/local/lib/ruby/gems/1.8/gems/spec_wire-0.3.5/templates/php .
+
+Configure spec_wire to point at the correct URL
+cd spec/
+edit spec_helper.rb
+
+Change: config.server_url = 'http://localhost/~you/<your folder>/spec/server/server.php'
+
+Possibly change spec/
+
+Write some specs:
+
+Write code to make them pass.
+
+
+== Resources
+spec_wire on Gemcutter:
+  http://gemcutter.org/gems/spec_wire
+soec_wire on Github
+  http://github.com/edhowland/spec_wire
+spec_wire Google Group
+  http://groups.google.com/group/spec_wire?hl=en
 
 == Note on Patches/Pull Requests
  
