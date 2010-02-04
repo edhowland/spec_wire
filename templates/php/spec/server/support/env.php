@@ -2,6 +2,8 @@
   // env.php - setuos for include paths and other site specific
   // stuff like include file names for functions not autoloaded via class name
   
+  class LoadError extends Exception {}
+  
   function prepend_include_path($path) {
     ini_set('include_path', $path . PATH_SEPARATOR .ini_get('include_path'));
   }
@@ -35,7 +37,7 @@
    * @param    bool     $capitalise_first_char   If true, capitalise the first char in $str
    * @return   string                              $str translated into camel caps
    */
-  function to_camel_case($str, $capitalise_first_char = false) {
+  function to_camel_case($str, $capitalise_first_char = true) {
     if($capitalise_first_char) {
       $str[0] = strtoupper($str[0]);
     }
@@ -49,10 +51,13 @@
         require_once $file;
       }
       else {
-        throw new Exception("Class $class_name ($file) not found");
+        throw new LoadError("Class ($class_name) not found");
       }
   }
   
-  prepend_include_path('..');
+  
+  
+  // c5 site specific include path
+  prepend_include_path('../../helpers');
 
 ?>
