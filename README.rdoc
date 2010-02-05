@@ -73,11 +73,11 @@ Refactor!
 
 == Resources
 spec_wire on Gemcutter:
-  * http://gemcutter.org/gems/spec_wire
+* http://gemcutter.org/gems/spec_wire
 soec_wire on Github
-  * http://github.com/edhowland/spec_wire
+* http://github.com/edhowland/spec_wire
 spec_wire Google Group
-  * http://groups.google.com/group/spec_wire?hl=en
+* http://groups.google.com/group/spec_wire?hl=en
 
 == Note on Patches/Pull Requests
  
