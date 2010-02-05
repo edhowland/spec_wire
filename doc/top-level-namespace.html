@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Top Level Namespace</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    
+    
+    <span class="title">Top Level Namespace</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Top Level Namespace 
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+      <dt class="r1">Includes:</dt>
+      <dd class="r1">FileUtils</dd>
+      
+    
+  
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+      <strong class="modules">Modules:</strong> <a href="SpecWire.html" title="SpecWire">SpecWire</a>
+    
+   
+    
+      <strong class="classes">Classes:</strong> <a href="ClassProxy.html" title="ClassProxy">ClassProxy</a>, <a href="HttpError.html" title="HttpError">HttpError</a>, <a href="LanguageError.html" title="LanguageError">LanguageError</a>, <a href="MethodError.html" title="MethodError">MethodError</a>, <a href="Module.html" title="Module">Module</a>, <a href="ObjectNotFound.html" title="ObjectNotFound">ObjectNotFound</a>, <a href="ServerError.html" title="ServerError">ServerError</a>, <a href="SpecWireExeption.html" title="SpecWireExeption">SpecWireExeption</a>
+    
+  
+</p>
+
+
+  
+
+  <h2>Method Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#conditionally_execute-instance_method" title="#conditionally_execute (instance method)">- (Object) <strong>conditionally_execute</strong>(cmd, dfile, *args) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#die-instance_method" title="#die (instance method)">- (Object) <strong>die</strong>(msg, *args) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#dry_run%21-instance_method" title="#dry_run! (instance method)">- (Object) <strong>dry_run!</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#dry_run%3F-instance_method" title="#dry_run? (instance method)">- (Object) <strong>dry_run?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#force%21-instance_method" title="#force! (instance method)">- (Object) <strong>force!</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#force%3F-instance_method" title="#force? (instance method)">- (Object) <strong>force?</strong> </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature"><a href="#split_path-instance_method" title="#split_path (instance method)">- (Object) <strong>split_path</strong>(path) </a>
+  
+  </span>
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+
+  <div id="method_details">
+    <h2>Method Details</h2>
+    
+      <div class="method_details first">
+  <p class="signature first" id="conditionally_execute-instance_method">
+  
+    - (<tt>Object</tt>) <strong>conditionally_execute</strong>(cmd, dfile, *args) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+134
+135
+136
+137
+138
+139
+140
+141</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 134</span>
+
+<span class='kw'>def</span> <span class='id conditionally_execute'>conditionally_execute</span><span class='lparen'>(</span><span class='id cmd'>cmd</span><span class='comma'>,</span> <span class='id dfile'>dfile</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id exists?'>exists?</span> <span class='id args'>args</span><span class='period'>.</span><span class='id last'>last</span> <span class='kw'>and</span> <span class='op'>!</span><span class='id force?'>force?</span><span class='rparen'>)</span> <span class='kw'>or</span> <span class='const'>File</span><span class='period'>.</span><span class='id directory?'>directory?</span> <span class='id args'>args</span><span class='period'>.</span><span class='id last'>last</span>
+    <span class='id puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exists </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id dfile'>dfile</span>
+  <span class='kw'>else</span>
+    <span class='id puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>create </span><span class='embexpr_beg'>#{</span><span class='id dfile'>dfile</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id send'>send</span> <span class='id cmd'>cmd</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span> <span class='kw'>unless</span> <span class='id dry_run?'>dry_run?</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="die-instance_method">
+  
+    - (<tt>Object</tt>) <strong>die</strong>(msg, *args) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+66
+67
+68
+69</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 66</span>
+
+<span class='kw'>def</span> <span class='id die'>die</span><span class='lparen'>(</span><span class='id msg'>msg</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id puts'>puts</span> <span class='id msg'>msg</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id args'>args</span><span class='period'>.</span><span class='id empty?'>empty?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> |</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id args'>args</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id e'>e</span><span class='op'>|</span> <span class='id e'>e</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>|</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id exit'>exit</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="dry_run!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dry_run!</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 62</span>
+
+<span class='kw'>def</span> <span class='id dry_run!'>dry_run!</span>
+  <span class='ivar'>@_dry_run</span><span class='op'>=</span><span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="dry_run?-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dry_run?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 59</span>
+
+<span class='kw'>def</span> <span class='id dry_run?'>dry_run?</span>
+  <span class='ivar'>@_dry_run</span> 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="force!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>force!</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55
+56
+57</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 55</span>
+
+<span class='kw'>def</span> <span class='id force!'>force!</span>
+  <span class='ivar'>@_force</span><span class='op'>=</span><span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="force?-instance_method">
+  
+    - (<tt>Object</tt>) <strong>force?</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 52</span>
+
+<span class='kw'>def</span> <span class='id force?'>force?</span>
+  <span class='ivar'>@_force</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="split_path-instance_method">
+  
+    - (<tt>Object</tt>) <strong>split_path</strong>(path) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+113
+114
+115
+116
+117
+118</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'bin/spec_wire', line 113</span>
+
+<span class='kw'>def</span> <span class='id split_path'>split_path</span><span class='lparen'>(</span><span class='id path'>path</span><span class='rparen'>)</span>
+  <span class='id a'>a</span><span class='op'>=</span><span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id p'>p</span><span class='op'>=</span><span class='const'>Pathname</span><span class='period'>.</span><span class='id new'>new</span> <span class='id path'>path</span>
+  <span class='id p'>p</span><span class='period'>.</span><span class='id each_filename'>each_filename</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id d'>d</span><span class='op'>|</span> <span class='id a'>a</span> <span class='op'>&lt;&lt;</span> <span class='id d'>d</span><span class='rbrace'>}</span>
+  <span class='id a'>a</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Fri Feb  5 15:27:03 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.4.0 (ruby-1.9.1).
+</div>
+
+  </body>
+</html>
