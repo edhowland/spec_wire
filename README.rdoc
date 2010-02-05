@@ -1,4 +1,4 @@
-= spec_wire
+== spec_wire
 
 A wire protocol for RSSpec and Cucumber. This  is really an object message passing protocol
 over HTTP using REST and JSON for parameter encoding. The goal is to maintain a
@@ -14,15 +14,19 @@ added. The reference server is in Ruby and runs on Sinatra.
 sudo gem install spec_wire
 
 Go to your target language folder and run the spec_wire command for your target language:
+<code>
 
 cd [project root]
+
 spec_wire .
 
 # this will copy a PHP template into the current folder.
 # take note of the server_url it reports.
 
 Configure spec_wire to point at the correct URL
+
 cd spec/
+
 edit spec_helper.rb
 
 Change: config.server_url to the server url in the spec_wire message.
@@ -35,8 +39,10 @@ This will be automatically done in a future version.
 Also do this for Cucumber if you want:
 
 cd [project root]/features/support
+
 edit env.rb and make the same change
 
+</code>
 You might want to bundle the server and deploy it on another host, or even a VM appliance. Just tarball the spec/server folder and untar it in the destination. The server/server.php [or whatever] should be reachable via a browser. Then edit the config.server_url to point to it.
 
 [
@@ -51,6 +57,8 @@ spec initial_spec.rb
 
 This should pass.
 
+== Usage
+
 Now get started!
 
 Write your specs:
@@ -61,14 +69,15 @@ Write your cukes.
 
 Write code to make them pass.
 
+Refactor!
 
 == Resources
 spec_wire on Gemcutter:
-  http://gemcutter.org/gems/spec_wire
+  * http://gemcutter.org/gems/spec_wire
 soec_wire on Github
-  http://github.com/edhowland/spec_wire
+  * http://github.com/edhowland/spec_wire
 spec_wire Google Group
-  http://groups.google.com/group/spec_wire?hl=en
+  * http://groups.google.com/group/spec_wire?hl=en
 
 == Note on Patches/Pull Requests
  
