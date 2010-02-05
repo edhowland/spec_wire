@@ -45,19 +45,30 @@
     return preg_replace_callback('/_([a-z])/', $func, $str);
   }
   
-  function __autoload($class_name) {
-      $file = from_camel_case($class_name) . '.php';
-      if (file_included_in_path($file)) {
-        require_once $file;
-      }
-      else {
-        throw new LoadError("Class ($class_name) not found");
-      }
+  # class map prefers these file names over the default
+  # CamelCase(camel_case) versions
+  # below is an example
+  $class_map = array(
+    "DashboardUsersSearchController" => "search.php"
+  );
+  
+  function __autoload($class) {
+    global $class_map;
+    $file = $class_map[$class];
+    if (is_null($file)) {
+      $file = from_camel_case($class) . '.php';
+    }
+    if (file_included_in_path($file)) {
+      require_once $file;
+    }
+    else {
+      throw new LoadError("Class ($class_name) not found");
+    }
   }
   
   
   
-  // c5 site specific include path
-  prepend_include_path('../../helpers');
+  // site specific include path
+  prepend_include_path('../..');
 
 ?>

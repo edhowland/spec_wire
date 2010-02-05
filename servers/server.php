@@ -165,7 +165,6 @@
           if (is_null($args) || $args == '[]') {
             logit("calling new $name()");
             $object = new $name();
-            $x = new Bar();
             logit("got object:" . get_class($object));
           }
           else {
