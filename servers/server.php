@@ -140,9 +140,27 @@
         $name = params('name');
         $message = params('message');
         $args = params('args');
-      
-        $object = new $name();
-        $result = $object->$message();
+        if (is_null($args) || $args == '[]') {
+          logit("$name::$message()) is ->", $result);
+          $result = $name::$message();
+        }
+        else {
+          logit('args b4 decode', $args);
+          $args = json_decode($args, true);
+          logit('args after decode', $args);
+          if (is_array($args)) {
+            $args = convert_objs($args);
+            logit("args after conversion", $args);
+            $argstr = join($args, ",");
+            logit("argstr after join", $argstr);
+          }
+          else {
+            $argstr = $args;
+          }
+          logit("calling " . "return $name::$message($argstr);");
+          $result = eval("return $name::$message($argstr);");
+        }
+        logit("result", $result);
         return json_encode(array($result));
       }
       catch (LoadError $e) {
@@ -211,6 +229,7 @@
           $message = params('message');
           $n_message = $message;
           $id = params('id');
+          logit('looking for object', $id);
           $object = get_object($id);
           if (is_null($object)) {
             logit('object not found', params('id'));
@@ -243,6 +262,8 @@
                 $result = array();
               } else {
                 logit("\$obect->$message()"); 
+                logit('class of object', get_class($object));
+                logit('object', object_properties_to_hash($object));
                 if (!method_exists($object, $message)) {
                   throw new NoMethodError("method $message does not exist");
                 }

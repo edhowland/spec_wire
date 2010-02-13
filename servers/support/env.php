@@ -1,5 +1,5 @@
 <?php
-  // env.php - setuos for include paths and other site specific
+  // env.php - setups for include paths and other site specific
   // stuff like include file names for functions not autoloaded via class name
   
   class LoadError extends Exception {}
@@ -62,7 +62,7 @@
       require_once $file;
     }
     else {
-      throw new LoadError("Class ($class_name) not found");
+      throw new LoadError("Class ($class) not found");
     }
   }
   
