@@ -35,7 +35,24 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
-task :spec => :check_dependencies
+namespace "server" do
+  desc "Start ruby server for specs"
+  task :start do |t|
+    system "bin/server.start"
+  end
+  
+  desc "Stop ruby server for specs"
+  task :stop do |t|
+    system "bin/server.stop"
+  end
+
+  desc "Run specs with server"
+  task :specs => [:check_dependencies] do |t|
+    Rake::Task["server:start"].execute
+    Rake::Task[:spec].execute
+    Rake::Task["server:stop"].execute
+  end
+end
 
 begin
   require 'cucumber/rake/task'
@@ -73,7 +90,7 @@ rescue LoadError
   end
 end
 
-task :default => :spec
+task :default => "server:specs"
 
 begin
   require 'yard'
@@ -84,4 +101,7 @@ rescue LoadError
   end
 end
 
-
+# attempt our at_exit, only if server is running
+# at_exit do
+#   Rake::Task["server:stop"]
+# end
