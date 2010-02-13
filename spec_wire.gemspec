@@ -126,7 +126,8 @@ Gem::Specification.new do |s|
      "templates/ruby/spec/server/support/env.rb",
      "templates/ruby/spec/spec_helper.rb",
      "templates/ruby/spec/support/matchers/blank.rb",
-     "templates/ruby/spec/support/matchers/exist.rb"
+     "templates/ruby/spec/support/matchers/exist.rb",
+     "tmp/class_cache/.hold"
   ]
   s.homepage = %q{http://github.com/edhowland/spec_wire}
   s.rdoc_options = ["--charset=UTF-8"]
