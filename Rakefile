@@ -54,6 +54,13 @@ namespace "server" do
   end
 end
 
+namespace "db" do
+  desc "[NoOP] Migrate the database through scripts in db/migrate and update db/schema.rb by invoking db:schema:dump. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
+  task :migrate do |t|
+    puts "Nothing to see here. Move along."
+  end
+end
+
 begin
   require 'cucumber/rake/task'
   Cucumber::Rake::Task.new(:features)
