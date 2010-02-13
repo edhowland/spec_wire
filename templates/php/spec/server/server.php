@@ -5,7 +5,7 @@
     require_once 'support/env.php';
   }
 
-  require_once 'lib/limonade.php';
+  require_once 'lib/limonade/lib/limonade.php';
 
   class NoMethodError extends Exception {}
   class ArgumentError extends Exception {}

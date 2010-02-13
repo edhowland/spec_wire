@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ed Howland"]
-  s.date = %q{2010-02-05}
+  s.date = %q{2010-02-13}
   s.description = %q{spec_wire_desc}
   s.email = %q{ed.howland@gmail.com}
   s.executables = ["server.start", "server.stop", "spec_wire"]
@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     ".gitmodules",
+     ".yardoc",
      "ChangeLog",
      "LICENSE",
      "README.rdoc",
@@ -72,7 +74,6 @@ Gem::Specification.new do |s|
      "servers/bar.rb",
      "servers/config.ru",
      "servers/foo_baz.rb",
-     "servers/lib/limonade.php",
      "servers/myfoo.php",
      "servers/myfoo.rb",
      "servers/obj_rest.rb",
@@ -110,7 +111,6 @@ Gem::Specification.new do |s|
      "templates/php/features/step_definitions/addition.steps.rb",
      "templates/php/features/support/env.rb",
      "templates/php/spec/initial_spec.rb",
-     "templates/php/spec/server/lib/limonade.php",
      "templates/php/spec/server/server.php",
      "templates/php/spec/server/support/env.php",
      "templates/php/spec/spec_helper.rb",
