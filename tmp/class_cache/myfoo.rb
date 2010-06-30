@@ -1,0 +1,1 @@
+        class Myfoo < ClassProxy; end

@@ -1,0 +1,1 @@
+        class NotFoundClass < ClassProxy; end

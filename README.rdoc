@@ -1,5 +1,7 @@
 == spec_wire
 
+Note: This project is undergoing a change. caveat emptor
+
 A wire protocol for RSSpec and Cucumber. This  is really an object message passing protocol
 over HTTP using REST and JSON for parameter encoding. The goal is to maintain a
 normal workflow of test/fail/code/pass/refactor/pass or Red-Green-Refactor using

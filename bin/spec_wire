@@ -73,7 +73,7 @@ end
 # handles long option names
 opts = GetoptLong.new(
   ['--help', '-h', GetoptLong::NO_ARGUMENT], 
-  ['--server-url', '-u', GetoptLong::REQUIRED_ARGUMENT],
+  ['--server-url', '-u', `GetoptLong::REQUIRED_ARGUMENT```],
   ['--php', GetoptLong::NO_ARGUMENT],
   ['--ruby', GetoptLong::NO_ARGUMENT],
   ['--dry-run', '-d', GetoptLong::NO_ARGUMENT],

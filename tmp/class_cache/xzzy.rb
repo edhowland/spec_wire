@@ -1,0 +1,1 @@
+        class Xzzy < ClassProxy; end
