@@ -1,6 +1,22 @@
 == spec_wire
 
-Note: This project is undergoing a change. caveat emptor
+Note: This project is deprecated. 
+Note: Caution: A dependant gem (rest-client) was found to have a security vulnerablity. The vulnerable versions were yanked from rubygems.org.
+This gem was also yanked from rubygems.org by myself. (Ed Howland).
+You can build the gem for yourself from the .gemspec file.
+
+Notes:
+
+- This Github repository will also be removed by January 1st, 2020.
+- This file should be renamed README.md
+- This Ruby project should be updated to use Bundler and Gemfile.
+- Internally, rest-client should be replaced by json-rpc.
+
+* json-rpc-client 
+* json-rpc - The server for Sinatra and Rack
+
+The above gems implement the version 2.0 JSON RPC protocol.
+
 
 A wire protocol for RSSpec and Cucumber. This  is really an object message passing protocol
 over HTTP using REST and JSON for parameter encoding. The goal is to maintain a
